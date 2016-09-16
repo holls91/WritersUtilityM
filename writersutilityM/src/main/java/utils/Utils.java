@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -318,6 +319,9 @@ public class Utils {
 		return builder.toString();
 	}
 	
+	public String getFileExtension(File file){
+		return file.getName().substring(file.getName().lastIndexOf(".") + 1);
+	}
 //	public static void main(String[] args) {
 //		String html = "&ldquo;Sin da quando Shydra Aldebaran mi ha comunicato il profilo del qui presente ragazzo dalla pelle scura, mi sono messo in moto per farlo giungere al mio cospetto&hellip; o meglio, al cospetto dell&rsquo;oggetto che gli servir&agrave; per aprire le Fontane&rdquo;&ldquo;Che genere di oggetto? La Aldebaran non me ne ha mai parlato&hellip; anzi, ha detto che se sono riuscito ad aprire la Fontana Lind sono capace di aprire anche le altre due, essendo le Tre Fontane legate&rdquo;";
 //		System.out.println(html);
