@@ -120,7 +120,15 @@ public abstract class DocumentProcessor {
 		return sb.toString();
 	}
 
-	public static String searchForWrongWords(String targetText){
+	@Deprecated
+	/***
+	 * Search for mispelled words in text and replace them with the correct one. It uses a regex to find words,
+	 * but it is worse than its replaceAll counterpart, which performs a lot better.
+	 * So use {@link #searchForWrongWordsReplaceAll(String targetText)} method instead.
+	 * @param targetText
+	 * @return	targetText with mispelled words replaced with red html highlighter
+	 */
+	public String searchForWrongWords(String targetText){
 		String patternToMatch = utils.Utils.itWrongWords.entrySet().stream().map(Entry::getKey).collect(Collectors.joining("|"));
 		Pattern pattern = Pattern.compile(patternToMatch);
 		Matcher matcher = pattern.matcher(targetText);
@@ -137,6 +145,20 @@ public abstract class DocumentProcessor {
 					"<span style='background-color: "+DocumentManipulator.getColor(1.0,1.0)+"'>" + utils.Utils.itWrongWords.get(entry.getValue()) + "</span>");
 		}
 		return sb.toString();
+	}
+	
+	/***
+	 * Search for mispelled words in text and replace them with the correct one. For every word found, it performs a wrap
+	 * highlighting word with red color.
+	 * @param targetText
+	 * @return	targetText with mispelled words replaced with red html highlighter
+	 */
+	public String searchForWrongWordsReplaceAll(String targetText){
+		for(Entry<String, String> entry : utils.Utils.itWrongWords.entrySet()){
+			targetText = targetText.replaceAll(entry.getKey(), "<span style='background-color: "+DocumentManipulator.getColor(1.0,1.0)+"'>" + entry.getValue() + "</span>");
+		}
+		
+		return targetText;
 	}
 	
 }
