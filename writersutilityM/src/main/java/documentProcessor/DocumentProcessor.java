@@ -6,6 +6,9 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import it.holls.writersutilityM.DocumentManipulator;
 import it.holls.writersutilityM.JaroDistance;
@@ -117,4 +120,23 @@ public abstract class DocumentProcessor {
 		return sb.toString();
 	}
 
+	public static String searchForWrongWords(String targetText){
+		String patternToMatch = utils.Utils.itWrongWords.entrySet().stream().map(Entry::getKey).collect(Collectors.joining("|"));
+		Pattern pattern = Pattern.compile(patternToMatch);
+		Matcher matcher = pattern.matcher(targetText);
+		
+		Map<Integer, String> wordsAndPosition = new TreeMap<>(Comparator.reverseOrder());
+		
+		while(matcher.find()){
+			wordsAndPosition.put(matcher.start(), matcher.group());
+		}
+		
+		StringBuffer sb = new StringBuffer(targetText);
+		for (Entry<Integer, String> entry : wordsAndPosition.entrySet()) {
+			sb.replace(entry.getKey(), entry.getKey()+ entry.getValue().length(),
+					"<span style='background-color: "+DocumentManipulator.getColor(1.0,1.0)+"'>" + utils.Utils.itWrongWords.get(entry.getValue()) + "</span>");
+		}
+		return sb.toString();
+	}
+	
 }

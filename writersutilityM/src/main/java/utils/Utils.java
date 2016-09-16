@@ -319,6 +319,25 @@ public class Utils {
 		return builder.toString();
 	}
 	
+	public static Map<String,String> itWrongWords = new HashMap<String, String>() {{
+	    put("perch&#232;", "perch&#233;");
+	    put("perche'", "perch&#233;");
+	    put("poich&#232;", "poich&#233;");
+	    put("poiche'", "poich&#233;");
+	    put("p&#242;", "po'");
+	    put("E'", "&#200;");
+	    put("s&#242;", "so");
+	    put("s&#224;", "sa");
+	    put("qual'è", "qual è");
+	    put("pultroppo","purtroppo");
+	    put("entusiasto", "entusiasta");
+	    put("sé stesso", "se stesso");
+	    put("finch&#232;", "finch&#233;");
+	    put("qu&#224;", "qua");
+	    put("qu&#236;", "qui");
+	    put("st&#242;", "sto");
+	}};
+	
 	public String getFileExtension(File file){
 		return file.getName().substring(file.getName().lastIndexOf(".") + 1);
 	}
