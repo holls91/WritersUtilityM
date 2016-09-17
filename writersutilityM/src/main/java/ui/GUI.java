@@ -60,7 +60,6 @@ public class GUI {
 	private JMenu mnFile;
 	private JMenuItem mntmApri;
 	private JMenuItem mntmEsci;
-	private GridBagConstraints gbc_scrollPane;
 
 	private String text = "";
 	private JPanel panelAltro;
@@ -116,8 +115,33 @@ public class GUI {
 		this.frmWritersUtility.setBounds(100, 100, 800, 500);
 		this.frmWritersUtility.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frmWritersUtility.setJMenuBar(getMenuBar());
-		this.frmWritersUtility.getContentPane().setLayout(new BorderLayout(0, 0));
-		this.frmWritersUtility.getContentPane().add(getTabbedPane(), BorderLayout.CENTER);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{784, 0};
+		gridBagLayout.rowHeights = new int[]{110, 175, 209, 17, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		frmWritersUtility.getContentPane().setLayout(gridBagLayout);
+		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
+		gbc_tabbedPane.anchor = GridBagConstraints.NORTH;
+		gbc_tabbedPane.fill = GridBagConstraints.HORIZONTAL;
+		gbc_tabbedPane.insets = new Insets(0, 0, 5, 0);
+		gbc_tabbedPane.gridx = 0;
+		gbc_tabbedPane.gridy = 0;
+		this.frmWritersUtility.getContentPane().add(getTabbedPane(), gbc_tabbedPane);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridheight = 2;
+		gbc_scrollPane.anchor = GridBagConstraints.WEST;
+		gbc_scrollPane.fill = GridBagConstraints.VERTICAL;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 1;
+		frmWritersUtility.getContentPane().add(getScrollPane(), gbc_scrollPane);
+		GridBagConstraints gbc_progressBar = new GridBagConstraints();
+		gbc_progressBar.anchor = GridBagConstraints.NORTH;
+		gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_progressBar.gridx = 0;
+		gbc_progressBar.gridy = 3;
+		frmWritersUtility.getContentPane().add(getProgressBar(), gbc_progressBar);
 	}
 
 	private JMenuBar getMenuBar() {
@@ -142,10 +166,10 @@ public class GUI {
 			panelRipetizioni = new JPanel();
 			GridBagLayout gbl_panelRipetizioni = new GridBagLayout();
 			gbl_panelRipetizioni.columnWidths = new int[] { 23, 136, 57, 24, 109, 200, 40, 167, 0 };
-			gbl_panelRipetizioni.rowHeights = new int[] { 45, 33, 336, 0, 0 };
+			gbl_panelRipetizioni.rowHeights = new int[] { 45, 33, 336, 0 };
 			gbl_panelRipetizioni.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
 					Double.MIN_VALUE };
-			gbl_panelRipetizioni.rowWeights = new double[] { 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
+			gbl_panelRipetizioni.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
 			panelRipetizioni.setLayout(gbl_panelRipetizioni);
 			GridBagConstraints gbc_lblFinestraDiRicerca = new GridBagConstraints();
 			gbc_lblFinestraDiRicerca.anchor = GridBagConstraints.WEST;
@@ -192,21 +216,6 @@ public class GUI {
 			gbc_spinnerLunghezza.gridx = 2;
 			gbc_spinnerLunghezza.gridy = 1;
 			panelRipetizioni.add(getSpinnerLunghezza(), gbc_spinnerLunghezza);
-			gbc_scrollPane = new GridBagConstraints();
-			gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-			gbc_scrollPane.fill = GridBagConstraints.BOTH;
-			gbc_scrollPane.gridwidth = 8;
-			gbc_scrollPane.gridx = 0;
-			gbc_scrollPane.gridy = 2;
-			// panelRipetizioni.add(getJFXPanel(), gbc_scrollPane);
-			panelRipetizioni.add(getScrollPane(), gbc_scrollPane);
-			GridBagConstraints gbc_progressBar = new GridBagConstraints();
-			gbc_progressBar.fill = GridBagConstraints.BOTH;
-			gbc_progressBar.gridwidth = 8;
-			gbc_progressBar.insets = new Insets(0, 0, 0, 5);
-			gbc_progressBar.gridx = 0;
-			gbc_progressBar.gridy = 3;
-			panelRipetizioni.add(getProgressBar(), gbc_progressBar);
 		}
 		return panelRipetizioni;
 	}
