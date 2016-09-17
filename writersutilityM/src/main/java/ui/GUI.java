@@ -1,6 +1,5 @@
 package ui;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -388,7 +387,7 @@ public class GUI {
 						file = fileChooser.getSelectedFile();
 						fileLoaded = true;
 						panelRipetizioni.remove(getScrollPane());
-						panelRipetizioni.add(getJFXPanel(), gbc_scrollPane);
+						panelRipetizioni.add(getJFXPanel(), getScrollPane());
 						// You should execute this part on the Event Dispatch
 						// Thread
 						// because it modifies a Swing component
