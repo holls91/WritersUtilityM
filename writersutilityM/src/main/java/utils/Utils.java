@@ -328,7 +328,7 @@ public class Utils {
 	    put("E'", "&#200;");
 	    put("s&#242;", "so");
 	    put("s&#224;", "sa");
-	    put("qual'è", "qual è");
+	    put("qual'&#232;", "qual &#232;");
 	    put("pultroppo","purtroppo");
 	    put("entusiasto", "entusiasta");
 	    put("sé stesso", "se stesso");

@@ -120,7 +120,6 @@ public abstract class DocumentProcessor {
 		return sb.toString();
 	}
 
-	@Deprecated
 	/***
 	 * Search for mispelled words in text and replace them with the correct one. It uses a regex to find words,
 	 * but it is worse than its replaceAll counterpart, which performs a lot better.
