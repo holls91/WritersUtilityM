@@ -154,7 +154,7 @@ public abstract class DocumentProcessor {
 	 */
 	public String searchForWrongWordsReplaceAll(String targetText){
 		for(Entry<String, String> entry : utils.Utils.itWrongWords.entrySet()){
-			targetText = targetText.replaceAll(entry.getKey(), "<span style='background-color: "+DocumentManipulator.getColor(1.0,1.0)+"'>" + entry.getValue() + "</span>");
+			targetText = targetText.replaceAll("\\b"+entry.getKey(), "<span style='background-color: "+DocumentManipulator.getColor(1.0,1.0)+"'>" + entry.getValue() + "</span>");
 		}
 		
 		return targetText;

@@ -325,10 +325,10 @@ public class Utils {
 	    put("poich&#232;", "poich&#233;");
 	    put("poiche'", "poich&#233;");
 	    put("p&#242;", "po'");
-	    put("E'", "&#200;");
+	    put("E&#8217;", "&#200;");
 	    put("s&#242;", "so");
 	    put("s&#224;", "sa");
-	    put("qual'&#232;", "qual &#232;");
+	    put("qual&#8217;&#232;", "qual &#232;");
 	    put("pultroppo","purtroppo");
 	    put("entusiasto", "entusiasta");
 	    put("sé stesso", "se stesso");
