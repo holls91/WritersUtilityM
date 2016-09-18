@@ -332,7 +332,7 @@ public class Utils {
 	    put("qual&#8217;&#232;", "qual &#232;");
 	    put("pultroppo","purtroppo");
 	    put("entusiasto", "entusiasta");
-	    put("sé stesso", "se stesso");
+	    put("s&#233; stesso", "se stesso");
 	    put("finch&#232;", "finch&#233;");
 	    put("qu&#224;", "qua");
 	    put("qu&#236;", "qui");
