@@ -3,6 +3,7 @@ package utils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Utils {
 	private static Map<String,String> entityMap = new HashMap<String, String>() {{
@@ -293,6 +294,9 @@ public class Utils {
 					case '&':
 						builder.append("&#38;");
 						break;
+					case '\'':
+						builder.append("&#8217;");
+						break;
 					case '"':
 						builder.append("&#34;");
 						break;
@@ -319,19 +323,19 @@ public class Utils {
 		return builder.toString();
 	}
 	
-	public static Map<String,String> itWrongWords = new HashMap<String, String>() {{
+	public static Map<String,String> itWrongWords = new TreeMap<String, String>() {{
 	    put("perch&#232;", "perch&#233;");
-	    put("perche'", "perch&#233;");
+	    put("perche&#8217;", "perch&#233;");
 	    put("poich&#232;", "poich&#233;");
-	    put("poiche'", "poich&#233;");
-	    put("p&#242;", "po'");
-	    put("E'", "&#200;");
+	    put("poiche&#8217;", "poich&#233;");
+	    put("p&#242;", "po&#8217;");
+	    put("E&#8217;", "&#200;");
 	    put("s&#242;", "so");
 	    put("s&#224;", "sa");
-	    put("qual'&#232;", "qual &#232;");
+	    put("qual&#8217;&#232;", "qual &#232;");
 	    put("pultroppo","purtroppo");
 	    put("entusiasto", "entusiasta");
-	    put("sé stesso", "se stesso");
+	    put("s&#233; stesso", "se stesso");
 	    put("finch&#232;", "finch&#233;");
 	    put("qu&#224;", "qua");
 	    put("qu&#236;", "qui");
