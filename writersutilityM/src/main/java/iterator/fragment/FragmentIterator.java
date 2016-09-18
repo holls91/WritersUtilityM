@@ -2,7 +2,7 @@ package iterator.fragment;
 
 import java.util.Iterator;
 
-public abstract class FragmentIterator implements Iterable<Fragment>{
+public abstract class FragmentIterator implements Iterable<Fragment>, Iterator<Fragment> {
 
 	protected String text;
 	
@@ -11,6 +11,8 @@ public abstract class FragmentIterator implements Iterable<Fragment>{
 	}
 	
 	@Override
-	public abstract Iterator<Fragment> iterator();
+	public Iterator<Fragment> iterator() {
+		return this;
+	}
 
 }

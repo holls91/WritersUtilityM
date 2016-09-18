@@ -1,7 +1,5 @@
 package iterator.fragment;
 
-import java.util.Iterator;
-
 public class HTMLFragmentIterator extends FragmentIterator {
 
 	String bodyRegex = "<body.*?>(.*)</.*?>";
@@ -17,10 +15,10 @@ public class HTMLFragmentIterator extends FragmentIterator {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public Iterator<Fragment> iterator() {
-		Iterator<Fragment> it = new Iterator<Fragment>() {
-
+//	@Override
+//	public Iterator<Fragment> iterator() {
+//		Iterator<Fragment> it = new Iterator<Fragment>() {
+//
 			@Override
 			public boolean hasNext() {
 				indexGt = htmlText.indexOf(">", indexLt);
@@ -70,8 +68,8 @@ public class HTMLFragmentIterator extends FragmentIterator {
 			public void remove() {
 				throw new UnsupportedOperationException();
 			}
-		};
-		return it;
-	}
+//		};
+//		return it;
+//	}
 
 }
