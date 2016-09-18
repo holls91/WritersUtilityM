@@ -62,8 +62,6 @@ public class GUI2 {
 
 	private DocumentProcessor documentReader = new DocumentProcessorInLineText();
 	
-	private UIUtility uiUtility;
-
 //	private Task task;
 	private JTabbedPane tabbedPane;
 	private JScrollPane scrollPane;
@@ -104,7 +102,6 @@ public class GUI2 {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		this.uiUtility = new UIUtility();
 		this.frmWritersUtility = new JFrame();
 		this.frmWritersUtility.setTitle("Writer's Utility");
 		this.frmWritersUtility.setBounds(100, 100, 800, 500);
@@ -193,7 +190,6 @@ public class GUI2 {
 
 					// editorPane.setText(DocumentManipulator.getParagraphText(DocumentManipulator.openFile(file)));
 				} catch (XWPFConverterException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			});
@@ -371,7 +367,6 @@ public class GUI2 {
 						text = Utils.createHtmlFromText(
 								editorPane.getDocument().getText(0, editorPane.getDocument().getLength()));
 					} catch (BadLocationException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					editorPane.setContentType("text/html");
@@ -412,7 +407,6 @@ public class GUI2 {
 							text = Utils.createHtmlFromText(
 									editorPane.getDocument().getText(0, editorPane.getDocument().getLength()));
 						} catch (BadLocationException e1) {
-							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
 						editorPane.setContentType("text/html");
