@@ -294,6 +294,9 @@ public class Utils {
 					case '&':
 						builder.append("&#38;");
 						break;
+					case '\'':
+						builder.append("&#8217;");
+						break;
 					case '"':
 						builder.append("&#34;");
 						break;
