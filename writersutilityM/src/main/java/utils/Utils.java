@@ -322,10 +322,10 @@ public class Utils {
 	
 	public static Map<String,String> itWrongWords = new TreeMap<String, String>() {{
 	    put("perch&#232;", "perch&#233;");
-	    put("perche'", "perch&#233;");
+	    put("perche&#8217;", "perch&#233;");
 	    put("poich&#232;", "poich&#233;");
-	    put("poiche'", "poich&#233;");
-	    put("p&#242;", "po'");
+	    put("poiche&#8217;", "poich&#233;");
+	    put("p&#242;", "po&#8217;");
 	    put("E&#8217;", "&#200;");
 	    put("s&#242;", "so");
 	    put("s&#224;", "sa");
