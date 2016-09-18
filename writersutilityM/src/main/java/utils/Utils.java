@@ -3,6 +3,7 @@ package utils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Utils {
 	private static Map<String,String> entityMap = new HashMap<String, String>() {{
@@ -319,7 +320,7 @@ public class Utils {
 		return builder.toString();
 	}
 	
-	public static Map<String,String> itWrongWords = new HashMap<String, String>() {{
+	public static Map<String,String> itWrongWords = new TreeMap<String, String>() {{
 	    put("perch&#232;", "perch&#233;");
 	    put("perche'", "perch&#233;");
 	    put("poich&#232;", "poich&#233;");
