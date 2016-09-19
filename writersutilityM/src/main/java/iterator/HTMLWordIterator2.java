@@ -9,9 +9,8 @@ import iterator.fragment.FragmentIterator;
 public class HTMLWordIterator2 extends WordIterator {
 
 	private int minLength;
-	private String regex = "(&#(19[2-9]|2[0-4][0-9]|25[0-5]);|[A-Za-zÀ-ÿ]+(&#(?:19[2-9]|2[0-4][0-9]|25[0-5]);)?)";
-	private Pattern pattern = Pattern.compile(regex);
-	private Matcher matcher = pattern.matcher(text);
+	private Pattern pattern;
+	private Matcher matcher;
 	private Fragment currentFragment;
 	private int findIndex;
 
@@ -19,6 +18,7 @@ public class HTMLWordIterator2 extends WordIterator {
 		super(fragmentIterator, minLength);
 		this.minLength = minLength;
 		pattern = Pattern.compile("([A-Za-zÀ-ÿ]{"+minLength+",}(?:[A-Za-zÀ-ÿ]|(&#(?:19[2-9]|2[0-4][0-9]|25[0-5]);)))");
+		pattern.matcher(text);
 	}
 
 	private Word word = new Word("", 0);

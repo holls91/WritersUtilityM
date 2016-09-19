@@ -59,5 +59,18 @@ public class IteratorTest {
 		}
 		assertEquals("FILONE FANTASY cavaliere categoria bianca nonch&#233; ",sb.toString());
 	}
+	
+	@Test
+	public void accentedWordTestStyled() {
+		String html = "<html><head><style>p{margin-top:0pt;margin-bottom:1pt;}span.Collegamentoipertestuale{color:#0000ff;text-decoration:underline;}p.NormaleWeb{text-align:left;margin-top:5.0pt;margin-bottom:5.0pt;}span.NormaleWeb{font-family:'Times New Roman';font-size:12.0pt;}</style></head><body>FILONE FANTASY:<b>syria &#232; un cavaliere della luce di categoria bianca, nonch&#233;</b></body></html>";
+		HTMLFragmentIterator fi = new HTMLFragmentIterator(html);
+		HTMLWordIterator2 wi = new HTMLWordIterator2(fi, 5);
+		StringBuilder sb = new StringBuilder();
+		while(wi.hasNext()) {
+			sb.append(wi.next().getParola()+" ");
+			System.out.println(sb+" ");
+		}
+		assertEquals("FILONE FANTASY cavaliere categoria bianca nonch&#233; ",sb.toString());
+	}
 
 }

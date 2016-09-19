@@ -1,8 +1,11 @@
 package iterator.fragment;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class HTMLFragmentIterator extends FragmentIterator {
 
-	String bodyRegex = "<body.*?>(.*)</.*?>";
+	String bodyRegex = "<body.*?>([\\s\\S]*)</.*?>";
 
 	int currentLastIndex = 0;
 	String htmlText = text;
@@ -10,9 +13,16 @@ public class HTMLFragmentIterator extends FragmentIterator {
 	// Fare match sull'apertura del tag body e fare .end()
 	boolean htmlTag = false;
 	Fragment fragment;
+	Pattern pattern;
+	Matcher matcher;
 
 	public HTMLFragmentIterator(String text) {
 		super(text);
+		pattern = Pattern.compile(bodyRegex);
+		matcher = pattern.matcher(text);
+		if(matcher.find()){
+			indexLt = matcher.start();
+		}
 	}
 
 	@Override
@@ -21,6 +31,7 @@ public class HTMLFragmentIterator extends FragmentIterator {
 		if (indexGt == -1) {
 			return false;
 		}
+        
 		indexLt = htmlText.indexOf("<", indexGt);
 		if (indexLt == -1) {
 			return false;
@@ -39,7 +50,6 @@ public class HTMLFragmentIterator extends FragmentIterator {
 			String textFound = text.substring(currentLastIndex, indexLt);
 			if (textFound.trim().length() != 0) {
 				fragment = new Fragment(textFound, currentLastIndex);
-				currentLastIndex += textFound.length(); // ha senso?
 			} else
 				return hasNext();
 
