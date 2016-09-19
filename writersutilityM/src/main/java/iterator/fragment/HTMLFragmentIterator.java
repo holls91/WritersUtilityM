@@ -9,67 +9,55 @@ public class HTMLFragmentIterator extends FragmentIterator {
 	int indexGt = -1, indexLt = 0;
 	// Fare match sull'apertura del tag body e fare .end()
 	boolean htmlTag = false;
+	Fragment fragment;
 
 	public HTMLFragmentIterator(String text) {
 		super(text);
-		// TODO Auto-generated constructor stub
 	}
 
-//	@Override
-//	public Iterator<Fragment> iterator() {
-//		Iterator<Fragment> it = new Iterator<Fragment>() {
-//
-			@Override
-			public boolean hasNext() {
-				indexGt = htmlText.indexOf(">", indexLt);
-				if (indexGt == -1) {
-					return false;
-				}
-				try{
-				if (text.substring(indexLt, indexGt + 1).equals("<style>"))
-					htmlTag = true;
-				} catch (IndexOutOfBoundsException e){
-					return false;
-				}
+	@Override
+	public boolean hasNext() {
+		indexGt = htmlText.indexOf(">", indexLt);
+		if (indexGt == -1) {
+			return false;
+		}
+		indexLt = htmlText.indexOf("<", indexGt);
+		if (indexLt == -1) {
+			return false;
+		}
 
-				indexLt = htmlText.indexOf("<", indexGt);
-				if (indexLt == -1) {
-					return false;
-				}
-				return true;
-			}
+		currentLastIndex = indexGt + 1;
 
-			@Override
-			public Fragment next() {
+		// FIX-ME: soluzione provvisoria per escludere la ricerca dentro
+		// gli
+		// stili del css, racchusi da graffe - servirebbe una regex
+		// <body.*?>(.*\/>)
+		if (text.substring(currentLastIndex, indexLt).contains("{"))
+			htmlTag = true;
 
-				currentLastIndex = indexGt + 1;
+		if (!htmlTag) {
+			String textFound = text.substring(currentLastIndex, indexLt);
+			if (textFound.trim().length() != 0) {
+				fragment = new Fragment(textFound, currentLastIndex);
+				currentLastIndex += textFound.length(); // ha senso?
+			} else
+				return hasNext();
 
-				// FIX-ME: soluzione provvisoria per escludere la ricerca dentro
-				// gli
-				// stili del css, racchusi da graffe - servirebbe una regex
-				// <body.*?>(.*\/>)
-				if (text.substring(currentLastIndex, indexLt).contains("{"))
-					htmlTag = true;
+		}
+		htmlTag = false;
 
-				if (!htmlTag) {
-					String textFound = text.substring(currentLastIndex, indexLt);
-					if (textFound.trim().length() != 0) {
-						Fragment fragment = new Fragment(textFound, currentLastIndex);
-						currentLastIndex += textFound.length(); // ha senso?
-						return fragment;
-					}
+		return true;
+	}
 
-				}
-				htmlTag = false;
-				return new Fragment("", currentLastIndex);
-			}
+	@Override
+	public Fragment next() {
+		return fragment;
 
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-//		};
-//		return it;
-//	}
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
 
 }
