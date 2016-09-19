@@ -25,7 +25,7 @@ public class IteratorTest {
 	public void wordTest() {
 		String html = "<html><head></head><body>prova di fragment 1!!! &#;<b>prova di fragment 2 ,?543 </b> prova di fragment 3</body></html>";
 		HTMLFragmentIterator fi = new HTMLFragmentIterator(html);
-		HTMLWordIterator2 wi = new HTMLWordIterator2(fi, 0);
+		HTMLWordIterator2 wi = new HTMLWordIterator2(fi, 1);
 		StringBuilder sb = new StringBuilder();
 		while(wi.hasNext()) {
 			sb.append(wi.next().getParola()+" ");
@@ -45,6 +45,19 @@ public class IteratorTest {
 			System.out.println(sb+" ");
 		}
 		assertEquals("FILONE FANTASY syria &#232; un cavaliere della luce di categoria bianca nonch&#233; ",sb.toString());
+	}
+	
+	@Test
+	public void accentedWordTestMinLength() {
+		String html = "<html><head></head><body>FILONE FANTASY:<b>syria &#232; un cavaliere della luce di categoria bianca, nonch&#233;</b></body></html>";
+		HTMLFragmentIterator fi = new HTMLFragmentIterator(html);
+		HTMLWordIterator2 wi = new HTMLWordIterator2(fi, 5);
+		StringBuilder sb = new StringBuilder();
+		while(wi.hasNext()) {
+			sb.append(wi.next().getParola()+" ");
+			System.out.println(sb+" ");
+		}
+		assertEquals("FILONE FANTASY cavaliere categoria bianca nonch&#233; ",sb.toString());
 	}
 
 }

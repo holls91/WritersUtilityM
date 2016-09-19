@@ -2,6 +2,8 @@ package it.holls.writersutilityM;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -9,6 +11,8 @@ import org.junit.Test;
 
 import documentProcessor.DocumentProcessor;
 import documentProcessor.DocumentProcessorInLineText;
+import documentProcessor.FactoryDocumentReader;
+import utils.Utils;
 
 public class DocumentProcessorTest {
 
@@ -43,4 +47,18 @@ public class DocumentProcessorTest {
 		assertEquals(utils.Utils.itWrongWords.entrySet().stream().map(Entry::getValue).collect(Collectors.joining("</span> <span style='background-color: #FF0000'>", "<span style='background-color: #FF0000'>", "</span>")), transformedText);
 	}
 	
+	@Test
+	public void compareWordExtractingMethods(){
+		String path = "resources/SampleDocx.docx";
+		File file = new File(path);
+		String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+		DocumentProcessor documentReader = FactoryDocumentReader.getDocumentReader(extension);
+		String text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
+		text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
+		
+		//Metodo 1
+		Map<Integer, String> words = documentReader.extractWordsFromHTML(text,3);
+		String newText = documentReader.searchForSimilarities(text, words,
+				15, Double.valueOf(85) / 100);
+	}
 }
