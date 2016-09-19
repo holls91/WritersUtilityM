@@ -11,20 +11,21 @@ public class IteratorTest {
 
 	@Test
 	public void fragmentTest() {
-		String html = "<html><head></head><body>prova di fragment <b>prova di fragment</b> prova di fragment</body></html>";
+		String html = "<html><head></head><body>prova di fragment <b>seconda prova di fragment</b> terza prova di fragment</body></html>";
 		HTMLFragmentIterator fi = new HTMLFragmentIterator(html);
 		StringBuilder sb = new StringBuilder();
 		while(fi.hasNext()) {
 			sb.append(fi.next().getText());
 			System.out.println(sb);
 		}
-		assertEquals("prova di fragment prova di fragment prova di fragment",sb.toString());
+		assertEquals("prova di fragment seconda prova di fragment terza prova di fragment",sb.toString());
 	}
+	
 	@Test
 	public void wordTest() {
-		String html = "<html><head></head><body>prova di fragment 1 <b>prova di fragment 2 </b> prova di fragment 3</body></html>";
+		String html = "<html><head></head><body>prova di fragment 1!!! &#;<b>prova di fragment 2 ,?543 </b> prova di fragment 3</body></html>";
 		HTMLFragmentIterator fi = new HTMLFragmentIterator(html);
-		HTMLWordIterator2 wi = new HTMLWordIterator2(fi);
+		HTMLWordIterator2 wi = new HTMLWordIterator2(fi, 0);
 		StringBuilder sb = new StringBuilder();
 		while(wi.hasNext()) {
 			sb.append(wi.next().getParola()+" ");
@@ -37,7 +38,7 @@ public class IteratorTest {
 	public void accentedWordTest() {
 		String html = "<html><head></head><body>FILONE FANTASY:<b>syria &#232; un cavaliere della luce di categoria bianca, nonch&#233;</b></body></html>";
 		HTMLFragmentIterator fi = new HTMLFragmentIterator(html);
-		HTMLWordIterator2 wi = new HTMLWordIterator2(fi);
+		HTMLWordIterator2 wi = new HTMLWordIterator2(fi, 0);
 		StringBuilder sb = new StringBuilder();
 		while(wi.hasNext()) {
 			sb.append(wi.next().getParola()+" ");

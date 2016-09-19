@@ -8,14 +8,15 @@ import iterator.fragment.FragmentIterator;
 
 public class HTMLWordIterator2 extends WordIterator {
 
-	private int minLength = 0, fragmentIndex = 0;
+	private int minLength;
 	private Pattern pattern = Pattern.compile("(&#(19[2-9]|2[0-4][0-9]|25[0-5]);|[A-Za-zÀ-ÿ]+(&#(?:19[2-9]|2[0-4][0-9]|25[0-5]);)?)");
 	private Matcher matcher = pattern.matcher(text);
 	private Fragment currentFragment;
 	private int findIndex;
 
-	public HTMLWordIterator2(FragmentIterator fragmentIterator) {
-		super(fragmentIterator);
+	public HTMLWordIterator2(FragmentIterator fragmentIterator, int minLength) {
+		super(fragmentIterator, minLength);
+		this.minLength = minLength;
 	}
 
 	private Word word = new Word("", 0);
