@@ -60,10 +60,10 @@ public class DocumentProcessorTest {
 		String text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
 		text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
 		
-		int minLength = 3;
+		int minLength = 4;
 		
 		//Metodo 1
-		Map<Integer, String> words = documentReader.extractWordsFromHTML(text,3);
+		Map<Integer, String> words = documentReader.extractWordsFromHTML(text,minLength);
 		String newText = documentReader.searchForSimilarities(text, words,
 				15, Double.valueOf(85) / 100);
 		
