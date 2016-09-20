@@ -374,7 +374,7 @@ public class GUI2 {
 				// HTMLDocument document = (HTMLDocument)
 				// editorPane.getDocument();
 				Map<Integer, String> words = documentReader.extractWordsFromHTML(text,
-						(int) spinnerLunghezza.getValue());
+						(int) spinnerLunghezza.getValue()-1);
 				String newText = documentReader.searchForSimilarities(text, words,
 						(int) spinnerFinestra.getValue(), Double.valueOf(sliderAccuratezza.getValue()) / 100);
 				Platform.runLater(() -> {
