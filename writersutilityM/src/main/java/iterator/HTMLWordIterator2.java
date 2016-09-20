@@ -17,6 +17,7 @@ public class HTMLWordIterator2 extends WordIterator {
 	public HTMLWordIterator2(FragmentIterator fragmentIterator, int minLength) {
 		super(fragmentIterator, minLength);
 		this.minLength = minLength;
+		//FIXME Non prende parole tipo éléfant
 		pattern = Pattern.compile("([A-Za-zÀ-ÿ]{"+minLength+",}(?:[A-Za-zÀ-ÿ]|(&#(?:19[2-9]|2[0-4][0-9]|25[0-5]);)))");
 		pattern.matcher(text);
 	}

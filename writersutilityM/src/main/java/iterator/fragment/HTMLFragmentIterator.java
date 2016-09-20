@@ -10,7 +10,6 @@ public class HTMLFragmentIterator extends FragmentIterator {
 	int currentLastIndex = 0;
 	String htmlText = text;
 	int indexGt = -1, indexLt = 0;
-	// Fare match sull'apertura del tag body e fare .end()
 	boolean htmlTag = false;
 	Fragment fragment;
 	Pattern pattern;
@@ -38,13 +37,6 @@ public class HTMLFragmentIterator extends FragmentIterator {
 		}
 
 		currentLastIndex = indexGt + 1;
-
-		// FIX-ME: soluzione provvisoria per escludere la ricerca dentro
-		// gli
-		// stili del css, racchusi da graffe - servirebbe una regex
-		// <body.*?>(.*\/>)
-		if (text.substring(currentLastIndex, indexLt).contains("{"))
-			htmlTag = true;
 
 		if (!htmlTag) {
 			String textFound = text.substring(currentLastIndex, indexLt);
