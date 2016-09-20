@@ -96,7 +96,7 @@ public class DocumentManipulator {
 
 	public static Map<Integer, String> extractWords(String target, Integer minLength) {
 
-		Pattern pattern = Pattern.compile("([A-Za-zÀ-ÿ]+(&#(?:19[2-9]|2[0-4][0-9]|25[0-5]);)?)");
+		Pattern pattern = Pattern.compile("([A-Za-zÀ-ÿ]{"+minLength+",}(?:[A-Za-zÀ-ÿ]|(&#(?:19[2-9]|2[0-4][0-9]|25[0-5]);)))");
 	
 		Matcher matcher = pattern.matcher(target);
 		

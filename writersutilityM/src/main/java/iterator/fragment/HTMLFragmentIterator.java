@@ -1,77 +1,65 @@
 package iterator.fragment;
 
-import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HTMLFragmentIterator extends FragmentIterator {
 
-	String bodyRegex = "<body.*?>(.*)</.*?>";
+	String bodyRegex = "<body.*?>([\\s\\S]*)</.*?>";
 
 	int currentLastIndex = 0;
 	String htmlText = text;
 	int indexGt = -1, indexLt = 0;
-	// Fare match sull'apertura del tag body e fare .end()
 	boolean htmlTag = false;
+	Fragment fragment;
+	Pattern pattern;
+	Matcher matcher;
 
 	public HTMLFragmentIterator(String text) {
 		super(text);
-		// TODO Auto-generated constructor stub
+		pattern = Pattern.compile(bodyRegex);
+		matcher = pattern.matcher(text);
+		if(matcher.find()){
+			indexLt = matcher.start();
+		}
 	}
 
 	@Override
-	public Iterator<Fragment> iterator() {
-		Iterator<Fragment> it = new Iterator<Fragment>() {
+	public boolean hasNext() {
+		indexGt = htmlText.indexOf(">", indexLt);
+		if (indexGt == -1) {
+			return false;
+		}
+        
+		indexLt = htmlText.indexOf("<", indexGt);
+		if (indexLt == -1) {
+			return false;
+		}
 
-			@Override
-			public boolean hasNext() {
-				indexGt = htmlText.indexOf(">", indexLt);
-				if (indexGt == -1) {
-					return false;
-				}
-				try{
-				if (text.substring(indexLt, indexGt + 1).equals("<style>"))
-					htmlTag = true;
-				} catch (IndexOutOfBoundsException e){
-					return false;
-				}
+		currentLastIndex = indexGt + 1;
 
-				indexLt = htmlText.indexOf("<", indexGt);
-				if (indexLt == -1) {
-					return false;
-				}
-				return true;
-			}
+		if (!htmlTag) {
+			String textFound = text.substring(currentLastIndex, indexLt);
+			if (textFound.trim().length() != 0) {
+				fragment = new Fragment(textFound, currentLastIndex);
+			} else
+				return hasNext();
 
-			@Override
-			public Fragment next() {
+		}
+		htmlTag = false;
 
-				currentLastIndex = indexGt + 1;
+		return true;
+	}
 
-				// FIX-ME: soluzione provvisoria per escludere la ricerca dentro
-				// gli
-				// stili del css, racchusi da graffe - servirebbe una regex
-				// <body.*?>(.*\/>)
-				if (text.substring(currentLastIndex, indexLt).contains("{"))
-					htmlTag = true;
+	@Override
+	public Fragment next() {
+		return fragment;
 
-				if (!htmlTag) {
-					String textFound = text.substring(currentLastIndex, indexLt);
-					if (textFound.trim().length() != 0) {
-						Fragment fragment = new Fragment(textFound, currentLastIndex);
-						currentLastIndex += textFound.length(); // ha senso?
-						return fragment;
-					}
+	}
 
-				}
-				htmlTag = false;
-				return new Fragment("", currentLastIndex);
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-		};
-		return it;
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
 	}
 
 }

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
 import javax.swing.GroupLayout;
@@ -39,6 +40,9 @@ import org.apache.poi.xwpf.converter.core.XWPFConverterException;
 import documentProcessor.DocumentProcessor;
 import documentProcessor.DocumentProcessorInLineText;
 import documentProcessor.FactoryDocumentReader;
+import iterator.HTMLWordIterator2;
+import iterator.Word;
+import iterator.fragment.HTMLFragmentIterator;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -373,8 +377,15 @@ public class GUI2 {
 				}
 				// HTMLDocument document = (HTMLDocument)
 				// editorPane.getDocument();
-				Map<Integer, String> words = documentReader.extractWordsFromHTML(text,
-						(int) spinnerLunghezza.getValue());
+//				Map<Integer, String> words = documentReader.extractWordsFromHTML(text,
+//						(int) spinnerLunghezza.getValue()-1);
+				Map<Integer, String> words = new TreeMap<>();
+				HTMLFragmentIterator fi = new HTMLFragmentIterator(text);
+				HTMLWordIterator2 wi = new HTMLWordIterator2(fi, (int) spinnerLunghezza.getValue()-1);
+				while(wi.hasNext()) {
+					Word word = wi.next();
+					words.put(word.getPosition(), word.getParola());
+				}
 				String newText = documentReader.searchForSimilarities(text, words,
 						(int) spinnerFinestra.getValue(), Double.valueOf(sliderAccuratezza.getValue()) / 100);
 				Platform.runLater(() -> {

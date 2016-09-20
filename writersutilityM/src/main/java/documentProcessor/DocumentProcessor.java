@@ -20,12 +20,18 @@ public abstract class DocumentProcessor {
 
 	public Map<Integer, String> extractWordsFromHTML(String paneText, Integer minLength) {
 		// System.out.println(paneText);
+		int indexGt = -1, indexLt = 0;
 
+		String bodyRegex = "<body.*?>([\\s\\S]*)</.*?>";
+		Pattern pattern = Pattern.compile(bodyRegex);
+		Matcher matcher = pattern.matcher(paneText);
+		if(matcher.find()){
+			indexLt = matcher.start();
+		}
 		Map<Integer, String> wordsAndPosition = new TreeMap<>();
 
 		int currentLastIndex = 0;
 		String text = paneText;
-		int indexGt = -1, indexLt = 0;
 		// Fare match sull'apertura del tag body e fare .end()
 		boolean stop = false;
 		while (true) {
@@ -109,7 +115,7 @@ public abstract class DocumentProcessor {
 						indexToReplace.put(sortedKeys.get(j),distance);				}
 			}
 			UIUtility.progress = (int) (100.0*(count)/max);
-			System.out.println(count+"/"+max+" => "+100.0*(count)/max+"%");
+//			System.out.println(count+"/"+max+" => "+100.0*(count)/max+"%");
 		}
 		
 		StringBuffer sb = new StringBuffer(targetText);
