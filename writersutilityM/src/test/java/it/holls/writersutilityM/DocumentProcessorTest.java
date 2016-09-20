@@ -53,19 +53,20 @@ public class DocumentProcessorTest {
 	
 	@Test
 	public void compareWordExtractingMethods(){
-		String path = "resources/Cap1 - Il testimone_NATHAN_OK.docx";
+		String path = "resources/Kaden e le Fontane di Luce.docx";
 		File file = new File(path);
 		String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 		DocumentProcessor documentReader = FactoryDocumentReader.getDocumentReader(extension);
 		String text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
 		text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
 		
-		int minLength = 4;
+		int minLength = 3;
+		int window = 15;
 		
 		//Metodo 1
-		Map<Integer, String> words = documentReader.extractWordsFromHTML(text,minLength);
+		Map<Integer, String> words = documentReader.extractWordsFromHTML(text,minLength-1);
 		String newText = documentReader.searchForSimilarities(text, words,
-				15, Double.valueOf(85) / 100);
+				window, Double.valueOf(85) / 100);
 		
 		//Metodo 2
 		Map<Integer, String> words2 = new TreeMap<>();
@@ -76,9 +77,10 @@ public class DocumentProcessorTest {
 			words2.put(word.getPosition(), word.getParola());
 		}
 		String newText2 = documentReader.searchForSimilarities(text, words2,
-				15, Double.valueOf(85) / 100);
+				window, Double.valueOf(85) / 100);
 		
 		//Check
+		assertEquals(words, words2);
 		assertEquals(newText, newText2);
 	}
 }
