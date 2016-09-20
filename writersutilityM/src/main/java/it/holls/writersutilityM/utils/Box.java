@@ -1,4 +1,4 @@
-package utils;
+package it.holls.writersutilityM.utils;
 
 import java.util.function.UnaryOperator;
 

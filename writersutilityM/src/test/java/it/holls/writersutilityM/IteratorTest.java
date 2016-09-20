@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import iterator.HTMLWordIterator2;
-import iterator.fragment.HTMLFragmentIterator;
+import it.holls.writersutilityM.iterator.HTMLWordIterator2;
+import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
 
 public class IteratorTest {
 

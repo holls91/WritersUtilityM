@@ -1,8 +1,8 @@
-package iterator;
+package it.holls.writersutilityM.iterator;
 
 import java.util.Iterator;
 
-import iterator.fragment.FragmentIterator;
+import it.holls.writersutilityM.iterator.fragment.FragmentIterator;
 
 public abstract class WordIterator implements Iterable<Word>, Iterator<Word> {
 	

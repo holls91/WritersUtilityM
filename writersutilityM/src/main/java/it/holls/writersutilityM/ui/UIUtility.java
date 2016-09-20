@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package ui;
+package it.holls.writersutilityM.ui;
 
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;

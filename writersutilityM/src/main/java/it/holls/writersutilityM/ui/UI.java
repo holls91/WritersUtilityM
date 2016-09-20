@@ -1,4 +1,4 @@
-package ui;
+package it.holls.writersutilityM.ui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

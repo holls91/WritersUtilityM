@@ -1,4 +1,4 @@
-package documentProcessor;
+package it.holls.writersutilityM.documentProcessor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import it.holls.writersutilityM.DocumentManipulator;
 import it.holls.writersutilityM.JaroDistance;
-import ui.UIUtility;
+import it.holls.writersutilityM.ui.UIUtility;
 
 public abstract class DocumentProcessor {
 
@@ -134,7 +134,7 @@ public abstract class DocumentProcessor {
 	 * @return	targetText with mispelled words replaced with red html highlighter
 	 */
 	public String searchForWrongWords(String targetText){
-		String patternToMatch = utils.Utils.itWrongWords.entrySet().stream().map(Entry::getKey).collect(Collectors.joining("|"));
+		String patternToMatch = it.holls.writersutilityM.utils.Utils.itWrongWords.entrySet().stream().map(Entry::getKey).collect(Collectors.joining("|"));
 		Pattern pattern = Pattern.compile(patternToMatch);
 		Matcher matcher = pattern.matcher(targetText);
 		
@@ -147,7 +147,7 @@ public abstract class DocumentProcessor {
 		StringBuffer sb = new StringBuffer(targetText);
 		for (Entry<Integer, String> entry : wordsAndPosition.entrySet()) {
 			sb.replace(entry.getKey(), entry.getKey()+ entry.getValue().length(),
-					"<span style='background-color: "+DocumentManipulator.getColor(1.0,1.0)+"'>" + utils.Utils.itWrongWords.get(entry.getValue()) + "</span>");
+					"<span style='background-color: "+DocumentManipulator.getColor(1.0,1.0)+"'>" + it.holls.writersutilityM.utils.Utils.itWrongWords.get(entry.getValue()) + "</span>");
 		}
 		return sb.toString();
 	}
@@ -159,7 +159,7 @@ public abstract class DocumentProcessor {
 	 * @return	targetText with mispelled words replaced with red html highlighter
 	 */
 	public String searchForWrongWordsReplaceAll(String targetText){
-		for(Entry<String, String> entry : utils.Utils.itWrongWords.entrySet()){
+		for(Entry<String, String> entry : it.holls.writersutilityM.utils.Utils.itWrongWords.entrySet()){
 			targetText = targetText.replaceAll("\\b"+entry.getKey(), "<span style='background-color: "+DocumentManipulator.getColor(1.0,1.0)+"'>" + entry.getValue() + "</span>");
 		}
 		

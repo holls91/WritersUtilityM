@@ -1,10 +1,10 @@
-package iterator;
+package it.holls.writersutilityM.iterator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import iterator.fragment.Fragment;
-import iterator.fragment.FragmentIterator;
+import it.holls.writersutilityM.iterator.fragment.Fragment;
+import it.holls.writersutilityM.iterator.fragment.FragmentIterator;
 
 public class HTMLWordIterator2 extends WordIterator {
 

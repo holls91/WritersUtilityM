@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import documentProcessor.DocumentProcessor;
-import documentProcessor.DocumentProcessorInLineText;
-import documentProcessor.FactoryDocumentReader;
-import iterator.HTMLWordIterator2;
-import iterator.Word;
-import iterator.fragment.HTMLFragmentIterator;
-import utils.Utils;
+import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
+import it.holls.writersutilityM.documentProcessor.DocumentProcessorInLineText;
+import it.holls.writersutilityM.documentProcessor.FactoryDocumentReader;
+import it.holls.writersutilityM.iterator.HTMLWordIterator2;
+import it.holls.writersutilityM.iterator.Word;
+import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
+import it.holls.writersutilityM.utils.Utils;
 
 public class DocumentProcessorTest {
 
@@ -46,9 +46,9 @@ public class DocumentProcessorTest {
 	@Test
 	public void searchForAllWrongWordsReplaceTest() {
 		DocumentProcessor dp = new DocumentProcessorInLineText();
-		String sampleText = utils.Utils.itWrongWords.entrySet().stream().map(Entry::getKey).collect(Collectors.joining(" "));
+		String sampleText = it.holls.writersutilityM.utils.Utils.itWrongWords.entrySet().stream().map(Entry::getKey).collect(Collectors.joining(" "));
 		String transformedText = dp.searchForWrongWordsReplaceAll(sampleText);
-		assertEquals(utils.Utils.itWrongWords.entrySet().stream().map(Entry::getValue).collect(Collectors.joining("</span> <span style='background-color: #FF0000'>", "<span style='background-color: #FF0000'>", "</span>")), transformedText);
+		assertEquals(it.holls.writersutilityM.utils.Utils.itWrongWords.entrySet().stream().map(Entry::getValue).collect(Collectors.joining("</span> <span style='background-color: #FF0000'>", "<span style='background-color: #FF0000'>", "</span>")), transformedText);
 	}
 	
 	@Test

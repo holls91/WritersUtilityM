@@ -1,4 +1,4 @@
-package documentProcessor;
+package it.holls.writersutilityM.documentProcessor;
 
 public class DocumentProcessorRtf extends DocumentProcessor{
 

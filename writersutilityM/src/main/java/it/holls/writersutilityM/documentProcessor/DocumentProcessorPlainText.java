@@ -1,10 +1,10 @@
-package documentProcessor;
+package it.holls.writersutilityM.documentProcessor;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import utils.Utils;
+import it.holls.writersutilityM.utils.Utils;
 
 public class DocumentProcessorPlainText extends DocumentProcessor {
 

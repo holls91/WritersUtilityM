@@ -1,4 +1,4 @@
-package ui;
+package it.holls.writersutilityM.ui;
 
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -37,17 +37,17 @@ import javax.swing.text.BadLocationException;
 
 import org.apache.poi.xwpf.converter.core.XWPFConverterException;
 
-import documentProcessor.DocumentProcessor;
-import documentProcessor.DocumentProcessorInLineText;
-import documentProcessor.FactoryDocumentReader;
-import iterator.HTMLWordIterator2;
-import iterator.Word;
-import iterator.fragment.HTMLFragmentIterator;
+import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
+import it.holls.writersutilityM.documentProcessor.DocumentProcessorInLineText;
+import it.holls.writersutilityM.documentProcessor.FactoryDocumentReader;
+import it.holls.writersutilityM.iterator.HTMLWordIterator2;
+import it.holls.writersutilityM.iterator.Word;
+import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
+import it.holls.writersutilityM.utils.Utils;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
-import utils.Utils;
 
 public class GUI2 {
 

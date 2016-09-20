@@ -1,4 +1,4 @@
-package ui;
+package it.holls.writersutilityM.ui;
 
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;

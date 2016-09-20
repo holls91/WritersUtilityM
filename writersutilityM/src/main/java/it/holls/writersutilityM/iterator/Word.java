@@ -1,4 +1,4 @@
-package iterator;
+package it.holls.writersutilityM.iterator;
 
 import java.util.Comparator;
 

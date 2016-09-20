@@ -1,4 +1,4 @@
-package documentProcessor;
+package it.holls.writersutilityM.documentProcessor;
 
 public class DocumentProcessorInLineText extends DocumentProcessor {
 
