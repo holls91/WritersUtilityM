@@ -34,7 +34,7 @@ import org.apache.poi.xwpf.converter.core.XWPFConverterException;
 
 import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
 import it.holls.writersutilityM.documentProcessor.DocumentProcessorInLineText;
-import it.holls.writersutilityM.documentProcessor.FactoryDocumentReader;
+import it.holls.writersutilityM.documentProcessor.FactoryDocumentProcessor;
 import it.holls.writersutilityM.utils.Utils;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -397,7 +397,7 @@ public class GUI {
 						frmWritersUtility.setTitle("Writer's Utility" + " - " + file.getName());
 
 						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-						documentReader = FactoryDocumentReader.getDocumentReader(extension);
+						documentReader = FactoryDocumentProcessor.getDocumentReader(extension);
 						text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
 						text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
 						System.out.println(text);

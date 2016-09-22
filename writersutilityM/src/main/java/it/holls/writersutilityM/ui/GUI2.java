@@ -39,7 +39,7 @@ import org.apache.poi.xwpf.converter.core.XWPFConverterException;
 
 import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
 import it.holls.writersutilityM.documentProcessor.DocumentProcessorInLineText;
-import it.holls.writersutilityM.documentProcessor.FactoryDocumentReader;
+import it.holls.writersutilityM.documentProcessor.FactoryDocumentProcessor;
 import it.holls.writersutilityM.iterator.HTMLWordIterator2;
 import it.holls.writersutilityM.iterator.Word;
 import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
@@ -64,7 +64,7 @@ public class GUI2 {
 	private String extension = "";
 	private boolean fileLoaded = false;
 
-	private DocumentProcessor documentReader = new DocumentProcessorInLineText();
+	private DocumentProcessor documentProcessor = new DocumentProcessorInLineText();
 	
 //	private Task task;
 	private JTabbedPane tabbedPane;
@@ -177,9 +177,12 @@ public class GUI2 {
 						frmWritersUtility.setTitle("Writer's Utility" + " - " + file.getName());
 
 						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-						documentReader = FactoryDocumentReader.getDocumentReader(extension);
-						text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
+						documentProcessor = FactoryDocumentProcessor.getDocumentReader(extension);
+						text = Utils.fixHtml(documentProcessor.loadAndConvertToHTML(file.getPath()));
+//						text = Utils.fixHtml(documentProcessor.loadAndConvertToHTML(file.getPath(), new DocumentReaderDocx4j()));
 						text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
+//						text = text.replaceAll("margin-(?:\\w)+:\\d{1,}(?:[,\\.]\\d{1,})?pt", "margin: 2em");
+						text = text.replaceAll("margin-left:\\d{1,}(?:[,\\.]\\d{1,})?pt", "margin-left: 5%");
 						System.out.println(text);
 
 						// Creation of scene and future interactions with
@@ -386,7 +389,7 @@ public class GUI2 {
 					Word word = wi.next();
 					words.put(word.getPosition(), word.getParola());
 				}
-				String newText = documentReader.searchForSimilarities(text, words,
+				String newText = documentProcessor.searchForSimilarities(text, words,
 						(int) spinnerFinestra.getValue(), Double.valueOf(sliderAccuratezza.getValue()) / 100);
 				Platform.runLater(() -> {
 					webView = new WebView();
@@ -422,7 +425,7 @@ public class GUI2 {
 						}
 						editorPane.setContentType("text/html");
 					}
-					String newText = documentReader.searchForWrongWordsReplaceAll(text);
+					String newText = documentProcessor.searchForWrongWordsReplaceAll(text);
 					Platform.runLater(() -> {
 						webView = new WebView();
 						jfxPanel.setScene(new Scene(webView));

@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
 import it.holls.writersutilityM.documentProcessor.DocumentProcessorInLineText;
-import it.holls.writersutilityM.documentProcessor.FactoryDocumentReader;
+import it.holls.writersutilityM.documentProcessor.FactoryDocumentProcessor;
 import it.holls.writersutilityM.iterator.HTMLWordIterator2;
 import it.holls.writersutilityM.iterator.Word;
 import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
@@ -56,7 +56,7 @@ public class DocumentProcessorTest {
 		String path = "resources/Kaden e le Fontane di Luce.docx";
 		File file = new File(path);
 		String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-		DocumentProcessor documentReader = FactoryDocumentReader.getDocumentReader(extension);
+		DocumentProcessor documentReader = FactoryDocumentProcessor.getDocumentReader(extension);
 		String text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
 		text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
 		

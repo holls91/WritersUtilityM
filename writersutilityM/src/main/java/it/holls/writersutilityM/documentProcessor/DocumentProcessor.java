@@ -12,10 +12,17 @@ import java.util.stream.Collectors;
 
 import it.holls.writersutilityM.DocumentManipulator;
 import it.holls.writersutilityM.JaroDistance;
+import it.holls.writersutilityM.documentReader.DocumentReader;
 import it.holls.writersutilityM.ui.UIUtility;
 
 public abstract class DocumentProcessor {
+	
+	protected DocumentReader documentReader;
 
+	public String loadAndConvertToHTML(String inputFile, DocumentReader documentReader){
+		return documentReader.loadAndConvertToHTML(inputFile);
+	}
+	
 	public abstract String loadAndConvertToHTML(String inputFile);
 
 	public Map<Integer, String> extractWordsFromHTML(String paneText, Integer minLength) {

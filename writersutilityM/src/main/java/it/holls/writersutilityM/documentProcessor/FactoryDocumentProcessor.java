@@ -1,6 +1,6 @@
 package it.holls.writersutilityM.documentProcessor;
 
-public class FactoryDocumentReader {
+public class FactoryDocumentProcessor {
 
 	public static DocumentProcessor getDocumentReader(String format) {
 		switch (format) {

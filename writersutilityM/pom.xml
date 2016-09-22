@@ -14,7 +14,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
-		<poi.version>3.14</poi.version>
+		<poi.version>3.15-beta2</poi.version>
 	</properties>
 
 	<build>
@@ -43,7 +43,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>ui.GUI2</mainClass>
+							<mainClass>it.holls.writersutilityM.ui.GUI2</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -65,11 +65,6 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.16.10</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.opensagres.xdocreport</groupId>
@@ -105,6 +100,11 @@
 			<groupId>net.java.dev.beansbinding</groupId>
 			<artifactId>beansbinding</artifactId>
 			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.docx4j</groupId>
+		    <artifactId>docx4j</artifactId>
+		    <version>3.3.1</version>
 		</dependency>
 	</dependencies>
 </project>
