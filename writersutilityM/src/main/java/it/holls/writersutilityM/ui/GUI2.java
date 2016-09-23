@@ -38,8 +38,9 @@ import javax.swing.text.BadLocationException;
 import org.apache.poi.xwpf.converter.core.XWPFConverterException;
 
 import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
-import it.holls.writersutilityM.documentProcessor.DocumentProcessorInLineText;
-import it.holls.writersutilityM.documentProcessor.FactoryDocumentProcessor;
+import it.holls.writersutilityM.documentReader.DocumentReader;
+import it.holls.writersutilityM.documentReader.DocumentReaderInLineText;
+import it.holls.writersutilityM.documentReader.FactoryDocumentReader;
 import it.holls.writersutilityM.iterator.HTMLWordIterator2;
 import it.holls.writersutilityM.iterator.Word;
 import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
@@ -64,7 +65,8 @@ public class GUI2 {
 	private String extension = "";
 	private boolean fileLoaded = false;
 
-	private DocumentProcessor documentProcessor = new DocumentProcessorInLineText();
+	private DocumentReader documentReader = new DocumentReaderInLineText();
+	private DocumentProcessor documentProcessor = new DocumentProcessor();
 	
 //	private Task task;
 	private JTabbedPane tabbedPane;
@@ -82,6 +84,12 @@ public class GUI2 {
 	private GroupLayout groupLayout;
 	private JPanel panelErrori;
 	private JButton button;
+//	private JMenu mnOpzioni;
+//	private JMenu mnDocx;
+//	private JCheckBoxMenuItem mntmPoi;
+//	private JCheckBoxMenuItem mntmDocxj;
+	
+	public static String menuSelection = "POI";
 	
 	/**
 	 * Launch the application.
@@ -131,6 +139,7 @@ public class GUI2 {
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
 			menuBar.add(getMnFile());
+//			menuBar.add(getMnOpzioni());
 		}
 		return menuBar;
 	}
@@ -177,9 +186,9 @@ public class GUI2 {
 						frmWritersUtility.setTitle("Writer's Utility" + " - " + file.getName());
 
 						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-						documentProcessor = FactoryDocumentProcessor.getDocumentReader(extension);
-						text = Utils.fixHtml(documentProcessor.loadAndConvertToHTML(file.getPath()));
-//						text = Utils.fixHtml(documentProcessor.loadAndConvertToHTML(file.getPath(), new DocumentReaderDocx4j()));
+						
+						documentReader = FactoryDocumentReader.getDocumentReader(extension);
+						text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
 						text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
 //						text = text.replaceAll("margin-(?:\\w)+:\\d{1,}(?:[,\\.]\\d{1,})?pt", "margin: 2em");
 						text = text.replaceAll("margin-left:\\d{1,}(?:[,\\.]\\d{1,})?pt", "margin-left: 5%");
@@ -439,4 +448,61 @@ public class GUI2 {
 		}
 		return button;
 	}
+//	private JMenu getMnOpzioni() {
+//		if (mnOpzioni == null) {
+//			mnOpzioni = new JMenu("Opzioni");
+//			mnOpzioni.add(getMnDocx());
+//		}
+//		return mnOpzioni;
+//	}
+//	private JMenu getMnDocx() {
+//		if (mnDocx == null) {
+//			mnDocx = new JMenu("Docx");
+//			mnDocx.add(getMntmPoi());
+//			mnDocx.add(getMntmDocxj());
+//		}
+//		return mnDocx;
+//	}
+//	private JCheckBoxMenuItem getMntmPoi() {
+//		if (mntmPoi == null) {
+//			mntmPoi = new JCheckBoxMenuItem("POI", true);
+//			mntmPoi.addItemListener(new ItemListener() {
+//
+//				@Override
+//				public void itemStateChanged(ItemEvent e) {
+//					Object source = e.getItemSelectable();
+//					if(source == mntmPoi){
+//						menuSelection = mntmPoi.getText();
+//					}
+//					else if (source == mntmDocxj){
+//						menuSelection = mntmDocxj.getText();
+//					}
+//					
+//				}
+//				
+//			});
+//		}
+//		return mntmPoi;
+//	}
+//	private JCheckBoxMenuItem getMntmDocxj() {
+//		if (mntmDocxj == null) {
+//			mntmDocxj = new JCheckBoxMenuItem("Docx4j");
+//			mntmDocxj.addItemListener(new ItemListener() {
+//
+//				@Override
+//				public void itemStateChanged(ItemEvent e) {
+//					Object source = e.getItemSelectable();
+//					if(source == mntmPoi){
+//						menuSelection = mntmPoi.getText();
+//					}
+//					else if (source == mntmDocxj){
+//						menuSelection = mntmDocxj.getText();
+//					}
+//					
+//				}
+//				
+//			});
+//		}
+//		return mntmDocxj;
+//	}
 }

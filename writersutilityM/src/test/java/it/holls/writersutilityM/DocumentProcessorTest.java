@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
-import it.holls.writersutilityM.documentProcessor.DocumentProcessorInLineText;
-import it.holls.writersutilityM.documentProcessor.FactoryDocumentProcessor;
+import it.holls.writersutilityM.documentReader.DocumentReader;
+import it.holls.writersutilityM.documentReader.FactoryDocumentReader;
 import it.holls.writersutilityM.iterator.HTMLWordIterator2;
 import it.holls.writersutilityM.iterator.Word;
 import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
@@ -27,7 +27,7 @@ public class DocumentProcessorTest {
 	
 	@Test
 	public void searchForWrongWordsRegexTest() {
-		DocumentProcessor dp = new DocumentProcessorInLineText();
+		DocumentProcessor dp = new DocumentProcessor();
 		String transformedText = "";
 		for(int i=0; i<1000; i++)
 			transformedText = dp.searchForWrongWords(sampleText);
@@ -36,7 +36,7 @@ public class DocumentProcessorTest {
 	
 	@Test
 	public void searchForWrongWordsReplaceTest() {
-		DocumentProcessor dp = new DocumentProcessorInLineText();
+		DocumentProcessor dp = new DocumentProcessor();
 		String transformedText = "";
 		for(int i=0; i<1000; i++)
 			transformedText = dp.searchForWrongWordsReplaceAll(sampleText);
@@ -45,7 +45,7 @@ public class DocumentProcessorTest {
 
 	@Test
 	public void searchForAllWrongWordsReplaceTest() {
-		DocumentProcessor dp = new DocumentProcessorInLineText();
+		DocumentProcessor dp = new DocumentProcessor();
 		String sampleText = it.holls.writersutilityM.utils.Utils.itWrongWords.entrySet().stream().map(Entry::getKey).collect(Collectors.joining(" "));
 		String transformedText = dp.searchForWrongWordsReplaceAll(sampleText);
 		assertEquals(it.holls.writersutilityM.utils.Utils.itWrongWords.entrySet().stream().map(Entry::getValue).collect(Collectors.joining("</span> <span style='background-color: #FF0000'>", "<span style='background-color: #FF0000'>", "</span>")), transformedText);
@@ -56,7 +56,8 @@ public class DocumentProcessorTest {
 		String path = "resources/Kaden e le Fontane di Luce.docx";
 		File file = new File(path);
 		String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-		DocumentProcessor documentReader = FactoryDocumentProcessor.getDocumentReader(extension);
+		DocumentReader documentReader = FactoryDocumentReader.getDocumentReader(extension);
+		DocumentProcessor documentProcessor = new DocumentProcessor();
 		String text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
 		text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
 		
@@ -64,8 +65,8 @@ public class DocumentProcessorTest {
 		int window = 15;
 		
 		//Metodo 1
-		Map<Integer, String> words = documentReader.extractWordsFromHTML(text,minLength-1);
-		String newText = documentReader.searchForSimilarities(text, words,
+		Map<Integer, String> words = documentProcessor.extractWordsFromHTML(text,minLength-1);
+		String newText = documentProcessor.searchForSimilarities(text, words,
 				window, Double.valueOf(85) / 100);
 		
 		//Metodo 2
@@ -76,7 +77,7 @@ public class DocumentProcessorTest {
 			Word word = wi.next();
 			words2.put(word.getPosition(), word.getParola());
 		}
-		String newText2 = documentReader.searchForSimilarities(text, words2,
+		String newText2 = documentProcessor.searchForSimilarities(text, words2,
 				window, Double.valueOf(85) / 100);
 		
 		//Check

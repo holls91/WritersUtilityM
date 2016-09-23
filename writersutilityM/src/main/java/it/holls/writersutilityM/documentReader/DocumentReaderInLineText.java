@@ -1,6 +1,6 @@
-package it.holls.writersutilityM.documentProcessor;
+package it.holls.writersutilityM.documentReader;
 
-public class DocumentProcessorInLineText extends DocumentProcessor {
+public class DocumentReaderInLineText extends DocumentReader {
 
 	@Override
 	public String loadAndConvertToHTML(String inputText) {

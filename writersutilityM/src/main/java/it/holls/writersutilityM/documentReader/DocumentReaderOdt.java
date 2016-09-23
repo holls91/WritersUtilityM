@@ -1,4 +1,4 @@
-package it.holls.writersutilityM.documentProcessor;
+package it.holls.writersutilityM.documentReader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -10,7 +10,7 @@ import fr.opensagres.xdocreport.converter.Options;
 import fr.opensagres.xdocreport.converter.XDocConverterException;
 import fr.opensagres.xdocreport.converter.odt.odfdom.xhtml.ODF2XHTMLConverter;
 
-public class DocumentProcessorOdt extends DocumentProcessor {
+public class DocumentReaderOdt extends DocumentReader {
 
 	@Override
 	public String loadAndConvertToHTML(String inputFile) {

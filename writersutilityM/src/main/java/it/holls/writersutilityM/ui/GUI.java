@@ -33,8 +33,9 @@ import javax.swing.text.BadLocationException;
 import org.apache.poi.xwpf.converter.core.XWPFConverterException;
 
 import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
-import it.holls.writersutilityM.documentProcessor.DocumentProcessorInLineText;
-import it.holls.writersutilityM.documentProcessor.FactoryDocumentProcessor;
+import it.holls.writersutilityM.documentReader.DocumentReader;
+import it.holls.writersutilityM.documentReader.DocumentReaderInLineText;
+import it.holls.writersutilityM.documentReader.FactoryDocumentReader;
 import it.holls.writersutilityM.utils.Utils;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -68,7 +69,8 @@ public class GUI {
 	private String extension = "";
 	private boolean fileLoaded = false;
 
-	private DocumentProcessor documentReader = new DocumentProcessorInLineText();
+	private DocumentReader documentReader = new DocumentReaderInLineText();
+	private DocumentProcessor documentProcessor = new DocumentProcessor();
 	private JProgressBar progressBar;
 	
 	private UIUtility uiUtility;
@@ -342,9 +344,9 @@ public class GUI {
 				}
 				// HTMLDocument document = (HTMLDocument)
 				// editorPane.getDocument();
-				Map<Integer, String> words = documentReader.extractWordsFromHTML(text,
+				Map<Integer, String> words = documentProcessor.extractWordsFromHTML(text,
 						(int) spinnerLunghezza.getValue());
-				String newText = documentReader.searchForSimilarities(text, words,
+				String newText = documentProcessor.searchForSimilarities(text, words,
 						(int) spinnerFinestra.getValue(), Double.valueOf(sliderAccuratezza.getValue()) / 100);
 				Platform.runLater(() -> {
 					webView = new WebView();
@@ -397,7 +399,7 @@ public class GUI {
 						frmWritersUtility.setTitle("Writer's Utility" + " - " + file.getName());
 
 						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-						documentReader = FactoryDocumentProcessor.getDocumentReader(extension);
+						documentReader = FactoryDocumentReader.getDocumentReader(extension);
 						text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
 						text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
 						System.out.println(text);

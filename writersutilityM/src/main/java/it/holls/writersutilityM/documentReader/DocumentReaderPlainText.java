@@ -1,4 +1,4 @@
-package it.holls.writersutilityM.documentProcessor;
+package it.holls.writersutilityM.documentReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 
 import it.holls.writersutilityM.utils.Utils;
 
-public class DocumentProcessorPlainText extends DocumentProcessor {
+public class DocumentReaderPlainText extends DocumentReader {
 
 	@Override
 	public String loadAndConvertToHTML(String inputFile) {

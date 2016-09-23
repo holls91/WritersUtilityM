@@ -1,4 +1,4 @@
-package it.holls.writersutilityM.documentProcessor;
+package it.holls.writersutilityM.documentReader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -17,7 +17,7 @@ import org.apache.poi.hwpf.HWPFDocumentCore;
 import org.apache.poi.hwpf.converter.WordToHtmlConverter;
 import org.apache.poi.hwpf.converter.WordToHtmlUtils;
 
-public class DocumentProcessorDoc extends DocumentProcessor {
+public class DocumentReaderDoc extends DocumentReader {
 
 	@Override
 	public String loadAndConvertToHTML(String inputFile) {
