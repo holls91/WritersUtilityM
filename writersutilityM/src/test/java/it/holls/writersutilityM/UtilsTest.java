@@ -20,5 +20,14 @@ public class UtilsTest {
 		String patternToMatch = it.holls.writersutilityM.utils.Utils.itWrongWords.entrySet().stream().map(Entry::getValue).collect(Collectors.joining("|"));
 		assertEquals("&#200;|entusiasta|finch&#233;|po&#8217;|perch&#233;|perch&#233;|poich&#233;|poich&#233;|purtroppo|qua|qui|qual &#232;|sa|se stesso|so|sto", patternToMatch);
 	}
+	
+	@Test
+	public void convertHTMLEntities(){
+		
+		assertEquals("È", it.holls.writersutilityM.utils.Utils.convert("&#200;"));
+		assertEquals("po’", it.holls.writersutilityM.utils.Utils.convert("po&#8217;"));
+		assertEquals("ciao", it.holls.writersutilityM.utils.Utils.convert("ciao"));
+		assertEquals("poiché", it.holls.writersutilityM.utils.Utils.convert("poich&#233;"));
+	}
 
 }

@@ -124,6 +124,53 @@ public class DocumentProcessor {
 		return sb.toString();
 	}
 
+	public String searchForSimilarities2(String targetText, Map<Integer, String> map, Integer searchWindow,
+			Double threshold) {
+		Integer currentSearchWindow;
+
+		if (searchWindow != 0)
+			if (searchWindow > map.size())
+				currentSearchWindow = map.size() - 1;
+			else
+				currentSearchWindow = searchWindow;
+		else
+			currentSearchWindow = map.size() - 1;
+
+		ArrayList<Integer> sortedKeys = new ArrayList<Integer>(map.keySet());
+		Collections.sort(sortedKeys);
+
+		TreeMap<Integer,Double> indexToReplace = new TreeMap<>(Comparator.reverseOrder());
+		// massimo numero di confronti per Jaro
+		int max = (map.size()-currentSearchWindow)*currentSearchWindow + (currentSearchWindow)*(currentSearchWindow-1)/2;
+		int count= 0;
+		for (int i = 0; i < map.size(); i++) {
+			for (int j = i + 1; j <= i+currentSearchWindow && j<map.size(); j++) {
+//				if (j >= sortedKeys.size())
+//					break;
+				count++;
+				Double distance = JaroDistance.applyMine(map.get(sortedKeys.get(i)), map.get(sortedKeys.get(j)));
+				if (distance >= threshold) {
+//					System.out.println("Distanza di Jaro tra " + Jsoup.parse(map.get(sortedKeys.get(i))).text() + " e "
+//							+ Jsoup.parse(map.get(sortedKeys.get(j))).text() + ": " + distance);
+					Double oldDistance = indexToReplace.get(sortedKeys.get(i));
+					if(oldDistance==null || oldDistance!=null && oldDistance<distance)
+						indexToReplace.put(sortedKeys.get(i),distance);
+					oldDistance = indexToReplace.get(sortedKeys.get(j));
+					if(oldDistance==null || oldDistance!=null && oldDistance<distance)
+						indexToReplace.put(sortedKeys.get(j),distance);				}
+			}
+			UIUtility.progress = (int) (100.0*(count)/max);
+//			System.out.println(count+"/"+max+" => "+100.0*(count)/max+"%");
+		}
+		
+		StringBuffer sb = new StringBuffer(targetText);
+		for (Entry<Integer,Double> entry : indexToReplace.entrySet()) {
+			sb.replace(entry.getKey(), entry.getKey()+ map.get(entry.getKey()).length(),
+					"<span style='background-color: "+DocumentManipulator.getColor(entry.getValue(),threshold)+"'>" + map.get(entry.getKey()) + "</span>");
+		}
+		return sb.toString();
+	}
+	
 	/***
 	 * Search for mispelled words in text and replace them with the correct one. It uses a regex to find words,
 	 * but it is worse than its replaceAll counterpart, which performs a lot better.
