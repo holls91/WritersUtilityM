@@ -453,6 +453,14 @@ public class GUI {
 		return button;
 	}
 
+	public String getOriginalText(){
+		return text;
+	}
+	
+	public void setOriginalText(String text){
+		this.text = text;
+	}
+	
 	public String getText() {
 		try {
 			return fileLoaded ? webView.getEngine().getDocument().getTextContent() : editorPane.getDocument().getText(0, editorPane.getDocument().getLength());
