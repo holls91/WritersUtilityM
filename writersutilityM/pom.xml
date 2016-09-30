@@ -43,7 +43,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>it.holls.writersutilityM.ui.GUI2</mainClass>
+							<mainClass>it.holls.writersutilityM.ui.GUI</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
