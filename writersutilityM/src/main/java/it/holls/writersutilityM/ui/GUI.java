@@ -460,6 +460,15 @@ public class GUI {
 			return text;
 		}
 	}
+	
+	public void setText(String text){
+		if(fileLoaded){
+			webView.getEngine().load(text);
+		}
+		else {
+			editorPane.setText(text);
+		}
+	}
 
 	public WordIterator getWordIterator() {
 		return wi;
