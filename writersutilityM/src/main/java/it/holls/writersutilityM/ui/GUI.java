@@ -197,6 +197,7 @@ public class GUI {
 						text = text.replaceAll("margin-left:\\d{1,}(?:[,\\.]\\d{1,})?pt", "margin-left: 5%");
 						System.out.println(text);
 
+						editorPane.setText("");
 						// Creation of scene and future interactions with
 						// JFXPanel
 						// should take place on the JavaFX Application Thread
@@ -454,13 +455,7 @@ public class GUI {
 
 	public String getText() {
 		try {
-			String paneText = editorPane.getDocument().getText(0, editorPane.getDocument().getLength());
-			if(paneText.length() > 0){
-				return paneText;
-			}
-			else {
-				return text;
-			}
+			return fileLoaded ? webView.getEngine().getDocument().getTextContent() : editorPane.getDocument().getText(0, editorPane.getDocument().getLength());
 		} catch (BadLocationException e) {
 			return text;
 		}

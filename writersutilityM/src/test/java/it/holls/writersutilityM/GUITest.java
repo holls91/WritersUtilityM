@@ -19,5 +19,9 @@ public class GUITest {
 		gui.getEditorPane().setText("Ciao");
 		
 		assertFalse(gui.getEditorPane().getDocument().getLength() == 0);
+		
+		gui.getEditorPane().setText("");
+		
+		assertEquals(gui.getEditorPane().getDocument().getLength(), 0);
 	}
 }
