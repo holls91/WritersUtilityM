@@ -43,6 +43,8 @@ import it.holls.writersutilityM.documentReader.DocumentReaderInLineText;
 import it.holls.writersutilityM.documentReader.FactoryDocumentReader;
 import it.holls.writersutilityM.iterator.HTMLWordIterator2;
 import it.holls.writersutilityM.iterator.Word;
+import it.holls.writersutilityM.iterator.WordIterator;
+import it.holls.writersutilityM.iterator.fragment.FragmentIterator;
 import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
 import it.holls.writersutilityM.utils.Utils;
 import javafx.application.Platform;
@@ -67,6 +69,7 @@ public class GUI {
 
 	private DocumentReader documentReader = new DocumentReaderInLineText();
 	private DocumentProcessor documentProcessor = new DocumentProcessor();
+	private WordIterator wi;
 	
 //	private Task task;
 	private JTabbedPane tabbedPane;
@@ -248,7 +251,7 @@ public class GUI {
 		}
 		return scrollPane;
 	}
-	private JEditorPane getEditorPane() {
+	public JEditorPane getEditorPane() {
 		if (editorPane == null) {
 			editorPane = new JEditorPane();
 		}
@@ -392,8 +395,8 @@ public class GUI {
 //				Map<Integer, String> words = documentReader.extractWordsFromHTML(text,
 //						(int) spinnerLunghezza.getValue()-1);
 				Map<Integer, String> words = new TreeMap<>();
-				HTMLFragmentIterator fi = new HTMLFragmentIterator(text);
-				HTMLWordIterator2 wi = new HTMLWordIterator2(fi, (int) spinnerLunghezza.getValue()-1);
+				FragmentIterator fi = new HTMLFragmentIterator(text);
+				wi = new HTMLWordIterator2(fi, (int) spinnerLunghezza.getValue()-1);
 				while(wi.hasNext()) {
 					Word word = wi.next();
 					words.put(word.getPosition(), word.getParola());
@@ -448,61 +451,24 @@ public class GUI {
 		}
 		return button;
 	}
-//	private JMenu getMnOpzioni() {
-//		if (mnOpzioni == null) {
-//			mnOpzioni = new JMenu("Opzioni");
-//			mnOpzioni.add(getMnDocx());
-//		}
-//		return mnOpzioni;
-//	}
-//	private JMenu getMnDocx() {
-//		if (mnDocx == null) {
-//			mnDocx = new JMenu("Docx");
-//			mnDocx.add(getMntmPoi());
-//			mnDocx.add(getMntmDocxj());
-//		}
-//		return mnDocx;
-//	}
-//	private JCheckBoxMenuItem getMntmPoi() {
-//		if (mntmPoi == null) {
-//			mntmPoi = new JCheckBoxMenuItem("POI", true);
-//			mntmPoi.addItemListener(new ItemListener() {
-//
-//				@Override
-//				public void itemStateChanged(ItemEvent e) {
-//					Object source = e.getItemSelectable();
-//					if(source == mntmPoi){
-//						menuSelection = mntmPoi.getText();
-//					}
-//					else if (source == mntmDocxj){
-//						menuSelection = mntmDocxj.getText();
-//					}
-//					
-//				}
-//				
-//			});
-//		}
-//		return mntmPoi;
-//	}
-//	private JCheckBoxMenuItem getMntmDocxj() {
-//		if (mntmDocxj == null) {
-//			mntmDocxj = new JCheckBoxMenuItem("Docx4j");
-//			mntmDocxj.addItemListener(new ItemListener() {
-//
-//				@Override
-//				public void itemStateChanged(ItemEvent e) {
-//					Object source = e.getItemSelectable();
-//					if(source == mntmPoi){
-//						menuSelection = mntmPoi.getText();
-//					}
-//					else if (source == mntmDocxj){
-//						menuSelection = mntmDocxj.getText();
-//					}
-//					
-//				}
-//				
-//			});
-//		}
-//		return mntmDocxj;
-//	}
+
+	public String getText() {
+		try {
+			String paneText = editorPane.getDocument().getText(0, editorPane.getDocument().getLength());
+			if(paneText.length() > 0){
+				return paneText;
+			}
+			else {
+				return text;
+			}
+		} catch (BadLocationException e) {
+			return text;
+		}
+	}
+
+	public WordIterator getWordIterator() {
+		return wi;
+	}
+
+	
 }
