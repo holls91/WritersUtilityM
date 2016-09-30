@@ -4,10 +4,15 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
@@ -17,11 +22,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -36,6 +41,9 @@ import it.holls.writersutilityM.documentProcessor.DocumentProcessor;
 import it.holls.writersutilityM.documentReader.DocumentReader;
 import it.holls.writersutilityM.documentReader.DocumentReaderInLineText;
 import it.holls.writersutilityM.documentReader.FactoryDocumentReader;
+import it.holls.writersutilityM.iterator.HTMLWordIterator2;
+import it.holls.writersutilityM.iterator.Word;
+import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
 import it.holls.writersutilityM.utils.Utils;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -46,23 +54,11 @@ public class GUI {
 
 	private JFrame frmWritersUtility;
 	private JMenuBar menuBar;
-	private JTabbedPane tabbedPane;
-	private JPanel panelRipetizioni;
-	private JScrollPane scrollPane;
-	private JEditorPane editorPane;
-	private JLabel lblFinestraDiRicerca;
-	private JSpinner spinnerFinestra;
-	private JLabel lblNewLabel;
-	private JSlider sliderAccuratezza;
-	private JLabel lblLunghezzaMinimaDelle;
-	private JSpinner spinnerLunghezza;
-	private JButton btnAnalizza;
 	private JMenu mnFile;
 	private JMenuItem mntmApri;
 	private JMenuItem mntmEsci;
 
 	private String text = "";
-	private JPanel panelAltro;
 
 	JFXPanel jfxPanel = new JFXPanel();
 	WebView webView;
@@ -71,21 +67,29 @@ public class GUI {
 
 	private DocumentReader documentReader = new DocumentReaderInLineText();
 	private DocumentProcessor documentProcessor = new DocumentProcessor();
-	private JProgressBar progressBar;
 	
-	private UIUtility uiUtility;
-
-	private Task task;
-	private JPanel panel;
-	private JLabel label;
-	private JSpinner spinner;
-	private JLabel label_1;
-	private JSlider slider;
+//	private Task task;
+	private JTabbedPane tabbedPane;
+	private JScrollPane scrollPane;
+	private JEditorPane editorPane;
+	
+	private JPanel panelRipetizioni;
+	private JSpinner spinnerFinestra;
+	private JLabel lblFinestraDiRicerca;
+	private JSlider sliderAccuratezza;
+	private JLabel lblNewLabel;
+	private JLabel lblLunghezzaMinimaDelle;
+	private JSpinner spinnerLunghezza;
+	private JButton btnAnalizza;
+	private GroupLayout groupLayout;
+	private JPanel panelErrori;
 	private JButton button;
-	private JLabel label_2;
-	private JSpinner spinner_1;
-	private JScrollPane scrollPane_1;
-	private JProgressBar progressBar_1;
+//	private JMenu mnOpzioni;
+//	private JMenu mnDocx;
+//	private JCheckBoxMenuItem mntmPoi;
+//	private JCheckBoxMenuItem mntmDocxj;
+	
+	public static String menuSelection = "POI";
 	
 	/**
 	 * Launch the application.
@@ -110,63 +114,154 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		this.uiUtility = new UIUtility();
 		this.frmWritersUtility = new JFrame();
 		this.frmWritersUtility.setTitle("Writer's Utility");
 		this.frmWritersUtility.setBounds(100, 100, 800, 500);
 		this.frmWritersUtility.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frmWritersUtility.setJMenuBar(getMenuBar());
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{784, 0};
-		gridBagLayout.rowHeights = new int[]{110, 175, 209, 17, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		frmWritersUtility.getContentPane().setLayout(gridBagLayout);
-		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-		gbc_tabbedPane.anchor = GridBagConstraints.NORTH;
-		gbc_tabbedPane.fill = GridBagConstraints.HORIZONTAL;
-		gbc_tabbedPane.insets = new Insets(0, 0, 5, 0);
-		gbc_tabbedPane.gridx = 0;
-		gbc_tabbedPane.gridy = 0;
-		this.frmWritersUtility.getContentPane().add(getTabbedPane(), gbc_tabbedPane);
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridheight = 2;
-		gbc_scrollPane.anchor = GridBagConstraints.WEST;
-		gbc_scrollPane.fill = GridBagConstraints.VERTICAL;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 1;
-		frmWritersUtility.getContentPane().add(getScrollPane(), gbc_scrollPane);
-		GridBagConstraints gbc_progressBar = new GridBagConstraints();
-		gbc_progressBar.anchor = GridBagConstraints.NORTH;
-		gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
-		gbc_progressBar.gridx = 0;
-		gbc_progressBar.gridy = 3;
-		frmWritersUtility.getContentPane().add(getProgressBar(), gbc_progressBar);
+		groupLayout = new GroupLayout(frmWritersUtility.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(getScrollPane(), GroupLayout.DEFAULT_SIZE, 784, Short.MAX_VALUE)
+				.addComponent(getTabbedPane_1(), Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 784, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(getTabbedPane_1(), GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(getScrollPane(), GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE))
+		);
+		frmWritersUtility.getContentPane().setLayout(groupLayout);
 	}
 
 	private JMenuBar getMenuBar() {
 		if (menuBar == null) {
 			menuBar = new JMenuBar();
 			menuBar.add(getMnFile());
+//			menuBar.add(getMnOpzioni());
 		}
 		return menuBar;
 	}
 
-	private JTabbedPane getTabbedPane() {
+	private JFXPanel getJFXPanel() {
+		if (jfxPanel == null) {
+			jfxPanel = new JFXPanel();
+		}
+		return jfxPanel;
+	}
+
+	private JMenu getMnFile() {
+		if (mnFile == null) {
+			mnFile = new JMenu("File");
+			mnFile.add(getMntmApri());
+			mnFile.add(getMntmEsci());
+		}
+		return mnFile;
+	}
+
+	private JMenuItem getMntmApri() {
+		if (mntmApri == null) {
+			mntmApri = new JMenuItem("Apri");
+			mntmApri.addActionListener(e -> {
+
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileFilter(
+						new FileNameExtensionFilter("File di testo", "docx", "doc", "odt", "rtf", "txt"));
+				int returnVal = fileChooser.showOpenDialog(frmWritersUtility);
+
+				try {
+					File file = null;
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						file = fileChooser.getSelectedFile();
+						fileLoaded = true;
+						try{
+							groupLayout.replace(getScrollPane(), getJFXPanel());
+						}
+						catch(IllegalArgumentException iae){
+							//Eccezione catturata nel caso in cui sia già stato effettuato il passaggio
+							//da in-line a file caricato
+						}
+
+						frmWritersUtility.setTitle("Writer's Utility" + " - " + file.getName());
+
+						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+						
+						documentReader = FactoryDocumentReader.getDocumentReader(extension);
+						text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
+						text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
+//						text = text.replaceAll("margin-(?:\\w)+:\\d{1,}(?:[,\\.]\\d{1,})?pt", "margin: 2em");
+						text = text.replaceAll("margin-left:\\d{1,}(?:[,\\.]\\d{1,})?pt", "margin-left: 5%");
+						System.out.println(text);
+
+						// Creation of scene and future interactions with
+						// JFXPanel
+						// should take place on the JavaFX Application Thread
+						Platform.runLater(() -> {
+							webView = new WebView();
+							jfxPanel.setScene(new Scene(webView));
+							webView.getEngine().loadContent(text);
+						});
+					}
+
+					// editorPane.setText(DocumentManipulator.getParagraphText(DocumentManipulator.openFile(file)));
+				} catch (XWPFConverterException e1) {
+					e1.printStackTrace();
+				}
+			});
+
+		}
+		return mntmApri;
+	}
+
+	private JMenuItem getMntmEsci() {
+		if (mntmEsci == null) {
+			mntmEsci = new JMenuItem("Esci");
+		}
+		return mntmEsci;
+	}
+
+	private static void setLookAndFeel(LookAndFeelInfo look) {
+		try {
+			UIManager.setLookAndFeel(look.getClassName());
+			UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+			defaults.put("nimbusOrange", defaults.get("nimbusBase"));
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+	}
+	private JTabbedPane getTabbedPane_1() {
 		if (tabbedPane == null) {
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+			JPanel pippo = getPanelRipetizioni();
+			pippo.setBounds(0, 0, 110, 110);
 			tabbedPane.addTab("Ripetizioni", null, getPanelRipetizioni(), null);
-			tabbedPane.addTab("Errori", null, getPanelAltro(), null);
+			tabbedPane.addTab("Errori", null, getPanelErrori(), null);
 		}
 		return tabbedPane;
 	}
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setViewportView(getEditorPane());
+		}
+		return scrollPane;
+	}
+	private JEditorPane getEditorPane() {
+		if (editorPane == null) {
+			editorPane = new JEditorPane();
+		}
+		return editorPane;
+	}
+	
 
+	// PANEL RIPRESI
 	private JPanel getPanelRipetizioni() {
 		if (panelRipetizioni == null) {
 			panelRipetizioni = new JPanel();
 			GridBagLayout gbl_panelRipetizioni = new GridBagLayout();
-			gbl_panelRipetizioni.columnWidths = new int[] { 23, 136, 57, 24, 109, 200, 40, 167, 0 };
+			gbl_panelRipetizioni.columnWidths = new int[] { 41, 136, 57, 24, 109, 200, 27, 167, 0 };
 			gbl_panelRipetizioni.rowHeights = new int[] { 45, 33, 336, 0 };
 			gbl_panelRipetizioni.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0,
 					Double.MIN_VALUE };
@@ -219,47 +314,6 @@ public class GUI {
 			panelRipetizioni.add(getSpinnerLunghezza(), gbc_spinnerLunghezza);
 		}
 		return panelRipetizioni;
-	}
-
-	private JPanel getPanelAltro() {
-		if (panelAltro == null) {
-			panelAltro = new JPanel();
-			GridBagLayout gbl_panelAltro = new GridBagLayout();
-			gbl_panelAltro.columnWidths = new int[] { 784, 0 };
-			gbl_panelAltro.rowHeights = new int[] { 408, 0 };
-			gbl_panelAltro.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-			gbl_panelAltro.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-			panelAltro.setLayout(gbl_panelAltro);
-			GridBagConstraints gbc_panel = new GridBagConstraints();
-			gbc_panel.fill = GridBagConstraints.BOTH;
-			gbc_panel.gridx = 0;
-			gbc_panel.gridy = 0;
-			panelAltro.add(getPanel(), gbc_panel);
-		}
-		return panelAltro;
-	}
-
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setViewportView(getEditorPane());
-			// scrollPane.setViewportView(getJFXPanel());
-		}
-		return scrollPane;
-	}
-
-	private JEditorPane getEditorPane() {
-		if (editorPane == null) {
-			editorPane = new JEditorPane();
-		}
-		return editorPane;
-	}
-
-	private JFXPanel getJFXPanel() {
-		if (jfxPanel == null) {
-			jfxPanel = new JFXPanel();
-		}
-		return jfxPanel;
 	}
 
 	private JLabel getLblFinestraDiRicerca() {
@@ -318,16 +372,8 @@ public class GUI {
 			btnAnalizza = new JButton("Analizza");
 			UIUtility.analyzeButton = btnAnalizza;
 			btnAnalizza.addActionListener(e -> {
-				btnAnalizza.setEnabled(false);
 				// Instances of javax.swing.SwingWorker are not reusuable, so
 				// we create new instances as needed.
-				task = new Task(this,evt -> {
-					if("progress"==evt.getPropertyName()) {
-						int progress = (Integer)evt.getNewValue();
-						progressBar.setValue(progress);
-					}
-				});
-				task.execute();
 			});
 			btnAnalizza.addActionListener(e -> {
 
@@ -337,15 +383,21 @@ public class GUI {
 						text = Utils.createHtmlFromText(
 								editorPane.getDocument().getText(0, editorPane.getDocument().getLength()));
 					} catch (BadLocationException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					editorPane.setContentType("text/html");
 				}
 				// HTMLDocument document = (HTMLDocument)
 				// editorPane.getDocument();
-				Map<Integer, String> words = documentProcessor.extractWordsFromHTML(text,
-						(int) spinnerLunghezza.getValue());
+//				Map<Integer, String> words = documentReader.extractWordsFromHTML(text,
+//						(int) spinnerLunghezza.getValue()-1);
+				Map<Integer, String> words = new TreeMap<>();
+				HTMLFragmentIterator fi = new HTMLFragmentIterator(text);
+				HTMLWordIterator2 wi = new HTMLWordIterator2(fi, (int) spinnerLunghezza.getValue()-1);
+				while(wi.hasNext()) {
+					Word word = wi.next();
+					words.put(word.getPosition(), word.getParola());
+				}
 				String newText = documentProcessor.searchForSimilarities(text, words,
 						(int) spinnerFinestra.getValue(), Double.valueOf(sliderAccuratezza.getValue()) / 100);
 				Platform.runLater(() -> {
@@ -359,234 +411,98 @@ public class GUI {
 			});
 		}
 		return btnAnalizza;
-	}
-
-	private JMenu getMnFile() {
-		if (mnFile == null) {
-			mnFile = new JMenu("File");
-			mnFile.add(getMntmApri());
-			mnFile.add(getMntmEsci());
+	}	
+	private JPanel getPanelErrori() {
+		if (panelErrori == null) {
+			panelErrori = new JPanel();
+			panelErrori.add(getButton());
 		}
-		return mnFile;
-	}
-
-	private JMenuItem getMntmApri() {
-		if (mntmApri == null) {
-			mntmApri = new JMenuItem("Apri");
-			mntmApri.addActionListener(e -> {
-
-				// String path = "resources/Qualche settimana dopo.doc";
-				// File file = new File(path);
-
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileFilter(
-						new FileNameExtensionFilter("File di testo", "docx", "doc", "odt", "rtf", "txt"));
-				int returnVal = fileChooser.showOpenDialog(frmWritersUtility);
-
-				try {
-					File file = null;
-					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						file = fileChooser.getSelectedFile();
-						fileLoaded = true;
-						panelRipetizioni.remove(getScrollPane());
-						panelRipetizioni.add(getJFXPanel(), getScrollPane());
-						// You should execute this part on the Event Dispatch
-						// Thread
-						// because it modifies a Swing component
-						// JFXPanel jfxPanel = new JFXPanel();
-						// frmWritersUtility.add(jfxPanel);
-
-						frmWritersUtility.setTitle("Writer's Utility" + " - " + file.getName());
-
-						extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-						documentReader = FactoryDocumentReader.getDocumentReader(extension);
-						text = Utils.fixHtml(documentReader.loadAndConvertToHTML(file.getPath()));
-						text = text.replaceAll("width:\\d{1,}(?:[,\\.]\\d{1,})?pt", "width:90%");
-						System.out.println(text);
-						// editorPane.setContentType("text/html");
-						// editorPane.setText(text);
-						// editorPane.setEditable(false);
-						// text = editorPane.getText();
-
-						// Creation of scene and future interactions with
-						// JFXPanel
-						// should take place on the JavaFX Application Thread
-						Platform.runLater(() -> {
-							webView = new WebView();
-							jfxPanel.setScene(new Scene(webView));
-							webView.getEngine().loadContent(text);
-						});
-					}
-
-					// editorPane.setText(DocumentManipulator.getParagraphText(DocumentManipulator.openFile(file)));
-				} catch (XWPFConverterException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			});
-
-		}
-		return mntmApri;
-	}
-
-	private JMenuItem getMntmEsci() {
-		if (mntmEsci == null) {
-			mntmEsci = new JMenuItem("Esci");
-		}
-		return mntmEsci;
-	}
-
-	private static void setLookAndFeel(LookAndFeelInfo look) {
-		try {
-			UIManager.setLookAndFeel(look.getClassName());
-			UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-			defaults.put("nimbusOrange", defaults.get("nimbusBase"));
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-	}
-	private JProgressBar getProgressBar() {
-		if (progressBar == null) {
-			progressBar = new JProgressBar(0, 100);
-	        progressBar.setValue(0);
-	        progressBar.setStringPainted(true);
-			UIUtility.progressBar = progressBar;
-		}
-		return progressBar;
-	}
-	private JPanel getPanel() {
-		if (panel == null) {
-			panel = new JPanel();
-			GridBagLayout gbl_panel = new GridBagLayout();
-			gbl_panel.columnWidths = new int[]{23, 136, 57, 24, 109, 200, 40, 167, 0};
-			gbl_panel.rowHeights = new int[]{45, 33, 336, 0, 0};
-			gbl_panel.columnWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-			gbl_panel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-			panel.setLayout(gbl_panel);
-			GridBagConstraints gbc_label = new GridBagConstraints();
-			gbc_label.anchor = GridBagConstraints.WEST;
-			gbc_label.insets = new Insets(0, 0, 5, 5);
-			gbc_label.gridx = 1;
-			gbc_label.gridy = 0;
-			panel.add(getLabel(), gbc_label);
-			GridBagConstraints gbc_spinner = new GridBagConstraints();
-			gbc_spinner.anchor = GridBagConstraints.SOUTHWEST;
-			gbc_spinner.insets = new Insets(0, 0, 5, 5);
-			gbc_spinner.gridx = 2;
-			gbc_spinner.gridy = 0;
-			panel.add(getSpinner(), gbc_spinner);
-			GridBagConstraints gbc_label_1 = new GridBagConstraints();
-			gbc_label_1.anchor = GridBagConstraints.WEST;
-			gbc_label_1.insets = new Insets(0, 0, 5, 5);
-			gbc_label_1.gridx = 4;
-			gbc_label_1.gridy = 0;
-			panel.add(getLabel_1(), gbc_label_1);
-			GridBagConstraints gbc_slider = new GridBagConstraints();
-			gbc_slider.fill = GridBagConstraints.HORIZONTAL;
-			gbc_slider.anchor = GridBagConstraints.NORTH;
-			gbc_slider.gridheight = 2;
-			gbc_slider.insets = new Insets(0, 0, 5, 5);
-			gbc_slider.gridx = 5;
-			gbc_slider.gridy = 0;
-			panel.add(getSlider(), gbc_slider);
-			GridBagConstraints gbc_button = new GridBagConstraints();
-			gbc_button.fill = GridBagConstraints.BOTH;
-			gbc_button.gridheight = 2;
-			gbc_button.insets = new Insets(0, 0, 5, 0);
-			gbc_button.gridx = 7;
-			gbc_button.gridy = 0;
-			panel.add(getButton(), gbc_button);
-			GridBagConstraints gbc_label_2 = new GridBagConstraints();
-			gbc_label_2.anchor = GridBagConstraints.WEST;
-			gbc_label_2.insets = new Insets(0, 0, 5, 5);
-			gbc_label_2.gridx = 1;
-			gbc_label_2.gridy = 1;
-			panel.add(getLabel_2(), gbc_label_2);
-			GridBagConstraints gbc_spinner_1 = new GridBagConstraints();
-			gbc_spinner_1.anchor = GridBagConstraints.NORTHWEST;
-			gbc_spinner_1.insets = new Insets(0, 0, 5, 5);
-			gbc_spinner_1.gridx = 2;
-			gbc_spinner_1.gridy = 1;
-			panel.add(getSpinner_1(), gbc_spinner_1);
-			GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
-			gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
-			gbc_scrollPane_1.gridwidth = 8;
-			gbc_scrollPane_1.insets = new Insets(0, 0, 5, 0);
-			gbc_scrollPane_1.gridx = 0;
-			gbc_scrollPane_1.gridy = 2;
-			panel.add(getScrollPane_1(), gbc_scrollPane_1);
-			GridBagConstraints gbc_progressBar_1 = new GridBagConstraints();
-			gbc_progressBar_1.insets = new Insets(0, 0, 0, 5);
-			gbc_progressBar_1.fill = GridBagConstraints.BOTH;
-			gbc_progressBar_1.gridwidth = 8;
-			gbc_progressBar_1.gridx = 0;
-			gbc_progressBar_1.gridy = 3;
-			panel.add(getProgressBar_1(), gbc_progressBar_1);
-		}
-		return panel;
-	}
-	private JLabel getLabel() {
-		if (label == null) {
-			label = new JLabel("Finestra di ricerca:");
-		}
-		return label;
-	}
-	private JSpinner getSpinner() {
-		if (spinner == null) {
-			spinner = new JSpinner();
-		}
-		return spinner;
-	}
-	private JLabel getLabel_1() {
-		if (label_1 == null) {
-			label_1 = new JLabel("Accuratezza ricerca:");
-		}
-		return label_1;
-	}
-	private JSlider getSlider() {
-		if (slider == null) {
-			slider = new JSlider();
-			slider.setValue(85);
-			slider.setSnapToTicks(true);
-			slider.setPaintTicks(true);
-			slider.setPaintLabels(true);
-			slider.setMinorTickSpacing(1);
-			slider.setMinimum(70);
-			slider.setMajorTickSpacing(5);
-		}
-		return slider;
+		return panelErrori;
 	}
 	private JButton getButton() {
 		if (button == null) {
-			button = new JButton("Analizza");
+			button = new JButton("Correggi errori");
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					//Operazioni necessarie se si scrive direttamente nel pane
+					if (!fileLoaded) {
+						try {
+							text = Utils.createHtmlFromText(
+									editorPane.getDocument().getText(0, editorPane.getDocument().getLength()));
+						} catch (BadLocationException e1) {
+							e1.printStackTrace();
+						}
+						editorPane.setContentType("text/html");
+					}
+					String newText = documentProcessor.searchForWrongWordsReplaceAll(text);
+					Platform.runLater(() -> {
+						webView = new WebView();
+						jfxPanel.setScene(new Scene(webView));
+						webView.getEngine().loadContent(newText);
+					});
+
+					System.out.println(newText);
+					editorPane.setText(newText);
+				}
+			});
 		}
 		return button;
 	}
-	private JLabel getLabel_2() {
-		if (label_2 == null) {
-			label_2 = new JLabel("Lunghezza minima delle parole:");
-		}
-		return label_2;
-	}
-	private JSpinner getSpinner_1() {
-		if (spinner_1 == null) {
-			spinner_1 = new JSpinner();
-		}
-		return spinner_1;
-	}
-	private JScrollPane getScrollPane_1() {
-		if (scrollPane_1 == null) {
-			scrollPane_1 = new JScrollPane();
-		}
-		return scrollPane_1;
-	}
-	private JProgressBar getProgressBar_1() {
-		if (progressBar_1 == null) {
-			progressBar_1 = new JProgressBar(0, 100);
-			progressBar_1.setValue(0);
-			progressBar_1.setStringPainted(true);
-		}
-		return progressBar_1;
-	}
+//	private JMenu getMnOpzioni() {
+//		if (mnOpzioni == null) {
+//			mnOpzioni = new JMenu("Opzioni");
+//			mnOpzioni.add(getMnDocx());
+//		}
+//		return mnOpzioni;
+//	}
+//	private JMenu getMnDocx() {
+//		if (mnDocx == null) {
+//			mnDocx = new JMenu("Docx");
+//			mnDocx.add(getMntmPoi());
+//			mnDocx.add(getMntmDocxj());
+//		}
+//		return mnDocx;
+//	}
+//	private JCheckBoxMenuItem getMntmPoi() {
+//		if (mntmPoi == null) {
+//			mntmPoi = new JCheckBoxMenuItem("POI", true);
+//			mntmPoi.addItemListener(new ItemListener() {
+//
+//				@Override
+//				public void itemStateChanged(ItemEvent e) {
+//					Object source = e.getItemSelectable();
+//					if(source == mntmPoi){
+//						menuSelection = mntmPoi.getText();
+//					}
+//					else if (source == mntmDocxj){
+//						menuSelection = mntmDocxj.getText();
+//					}
+//					
+//				}
+//				
+//			});
+//		}
+//		return mntmPoi;
+//	}
+//	private JCheckBoxMenuItem getMntmDocxj() {
+//		if (mntmDocxj == null) {
+//			mntmDocxj = new JCheckBoxMenuItem("Docx4j");
+//			mntmDocxj.addItemListener(new ItemListener() {
+//
+//				@Override
+//				public void itemStateChanged(ItemEvent e) {
+//					Object source = e.getItemSelectable();
+//					if(source == mntmPoi){
+//						menuSelection = mntmPoi.getText();
+//					}
+//					else if (source == mntmDocxj){
+//						menuSelection = mntmDocxj.getText();
+//					}
+//					
+//				}
+//				
+//			});
+//		}
+//		return mntmDocxj;
+//	}
 }
