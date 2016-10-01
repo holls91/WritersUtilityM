@@ -69,6 +69,7 @@ public class GUI {
 
 	private DocumentReader documentReader = new DocumentReaderInLineText();
 	private DocumentProcessor documentProcessor = new DocumentProcessor();
+	private FragmentIterator fi;
 	private WordIterator wi;
 	
 //	private Task task;
@@ -396,7 +397,7 @@ public class GUI {
 //				Map<Integer, String> words = documentReader.extractWordsFromHTML(text,
 //						(int) spinnerLunghezza.getValue()-1);
 				Map<Integer, String> words = new TreeMap<>();
-				FragmentIterator fi = new HTMLFragmentIterator(text);
+				fi = new HTMLFragmentIterator(text);
 				wi = new HTMLWordIterator2(fi, (int) spinnerLunghezza.getValue()-1);
 				while(wi.hasNext()) {
 					Word word = wi.next();
@@ -459,6 +460,7 @@ public class GUI {
 	
 	public void setOriginalText(String text){
 		this.text = text;
+		this.setText(text);
 	}
 	
 	public String getText() {
@@ -474,12 +476,21 @@ public class GUI {
 			webView.getEngine().load(text);
 		}
 		else {
+			editorPane.setContentType("text/html");
 			editorPane.setText(text);
 		}
 	}
 
+	public FragmentIterator getFragmentIterator(){
+		return fi;
+	}
+	
 	public WordIterator getWordIterator() {
 		return wi;
+	}
+
+	public DocumentProcessor getDocumentProcessor() {
+		return documentProcessor;
 	}
 
 	
