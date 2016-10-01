@@ -60,7 +60,7 @@ public class GUI {
 	private JMenuItem mntmApri;
 	private JMenuItem mntmEsci;
 
-	private String text = "";
+	private String text = "", newText = "";
 
 	JFXPanel jfxPanel = new JFXPanel();
 	WebView webView;
@@ -207,6 +207,7 @@ public class GUI {
 							jfxPanel.setScene(new Scene(webView));
 							webView.getEngine().loadContent(text);
 						});
+						this.newText = text;
 					}
 
 					// editorPane.setText(DocumentManipulator.getParagraphText(DocumentManipulator.openFile(file)));
@@ -403,7 +404,7 @@ public class GUI {
 					Word word = wi.next();
 					words.put(word.getPosition(), word.getParola());
 				}
-				String newText = documentProcessor.searchForSimilarities(text, words,
+				newText = documentProcessor.searchForSimilarities(text, words,
 						(int) spinnerFinestra.getValue(), Double.valueOf(sliderAccuratezza.getValue()) / 100);
 				Platform.runLater(() -> {
 					webView = new WebView();
@@ -439,7 +440,7 @@ public class GUI {
 						}
 						editorPane.setContentType("text/html");
 					}
-					String newText = documentProcessor.searchForWrongWordsReplaceAll(text);
+					newText = documentProcessor.searchForWrongWordsReplaceAll(text);
 					Platform.runLater(() -> {
 						webView = new WebView();
 						jfxPanel.setScene(new Scene(webView));
@@ -464,7 +465,7 @@ public class GUI {
 	}
 	
 	public String getText() {
-		return fileLoaded ? webView.getEngine().getDocument().getTextContent() : getEditorPane().getText();
+		return fileLoaded ? newText : getEditorPane().getText();
 	}
 	
 	public void setText(String text){
@@ -480,6 +481,7 @@ public class GUI {
 				getEditorPane().setContentType("text/html");
 			getEditorPane().setText(text);
 		}
+		this.newText = text;
 	}
 
 	public FragmentIterator getFragmentIterator(){
@@ -494,5 +496,8 @@ public class GUI {
 		return documentProcessor;
 	}
 
+	public void setFileLoaded(boolean loaded){
+		this.fileLoaded = loaded;
+	}
 	
 }

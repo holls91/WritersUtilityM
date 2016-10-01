@@ -37,4 +37,15 @@ public class GUITest {
 		assertFalse(gui.getEditorPane().getText().length() == 0);
 		assertEquals(gui.getEditorPane().getText().replaceAll("\n", "").replaceAll(">(\\s)*", ">").replaceAll("(\\s)*<", "<"), "<html><head></head><body><p>Prova prova</p></body></html>");
 	}
+	
+	@Test
+	public void setAndGetWebviewText(){
+		GUI gui = new GUI();
+		gui.setFileLoaded(true);
+		
+		String text = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html><head></head><body><p>Prova prova</p></body></html>";
+		gui.setText(text);
+		
+		assertEquals(text, gui.getText());
+	}
 }
