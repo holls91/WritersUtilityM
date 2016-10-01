@@ -464,20 +464,21 @@ public class GUI {
 	}
 	
 	public String getText() {
-		try {
-			return fileLoaded ? webView.getEngine().getDocument().getTextContent() : editorPane.getDocument().getText(0, editorPane.getDocument().getLength());
-		} catch (BadLocationException e) {
-			return text;
-		}
+		return fileLoaded ? webView.getEngine().getDocument().getTextContent() : getEditorPane().getText();
 	}
 	
 	public void setText(String text){
 		if(fileLoaded){
-			webView.getEngine().load(text);
+			Platform.runLater(() -> {
+				webView = new WebView();
+				jfxPanel.setScene(new Scene(webView));
+				webView.getEngine().loadContent(text);
+			});
 		}
 		else {
-			editorPane.setContentType("text/html");
-			editorPane.setText(text);
+			if(!getEditorPane().getContentType().equals("text/html"))
+				getEditorPane().setContentType("text/html");
+			getEditorPane().setText(text);
 		}
 	}
 

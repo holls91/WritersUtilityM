@@ -273,7 +273,7 @@ public class Utils {
 		StringBuilder builder = new StringBuilder();
 		boolean previousWasASpace = false;
 		String[] tempText = inputText.split("\r?\n");
-		builder.append("<html><body>");
+		builder.append("<html><head></head><body>");
 		for (int i = 0; i < tempText.length; i++) {
 			String input = tempText[i];
 			if (input.length() > 0 && !input.equals("\n") && !input.equals("\r\n")) {
