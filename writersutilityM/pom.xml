@@ -5,6 +5,7 @@
 	<groupId>it.holls</groupId>
 	<artifactId>writersutilityM</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<name>writersutilityM</name>
 	<url>http://maven.apache.org</url>
@@ -106,6 +107,12 @@
 		    <artifactId>docx4j-ImportXHTML</artifactId>
 		    <version>3.3.1</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>it.holls</groupId>
+			<artifactId>writersutility-plugin</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+	@SuppressWarnings("serial")
 	private static Map<String, String> entityMap = new HashMap<String, String>() {
 		{
 			put("&nbsp;", "&#160;");
@@ -328,6 +329,7 @@ public class Utils {
 		return builder.toString();
 	}
 
+	@SuppressWarnings("serial")
 	public static Map<String, String> itWrongWords = new TreeMap<String, String>() {
 		{
 			put("perch&#232;", "perch&#233;");

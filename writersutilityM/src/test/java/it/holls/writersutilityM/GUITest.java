@@ -44,8 +44,8 @@ public class GUITest {
 		gui.setFileLoaded(true);
 		
 		String text = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html><head></head><body><p>Prova prova</p></body></html>";
-		gui.setText(text);
+		gui.setNewText(text);
 		
-		assertEquals(text, gui.getText());
+		assertEquals(text, gui.getGUIText());
 	}
 }

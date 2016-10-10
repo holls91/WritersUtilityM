@@ -4,8 +4,9 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Stream;
@@ -46,15 +47,12 @@ import it.holls.writersutilityM.iterator.WordIterator;
 import it.holls.writersutilityM.iterator.fragment.FragmentIterator;
 import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
 import it.holls.writersutilityM.utils.Utils;
-import it.holls.writersutility_plugin.plugin.Plugin;
-import it.holls.writersutility_plugin.service.GUIObserver;
-import it.holls.writersutility_plugin.service.LoaderService;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 
-public class GUI extends GUIObserver {
+public class GUI_Backup {
 
 	private JFrame frmWritersUtility;
 	private JMenuBar menuBar;
@@ -95,8 +93,6 @@ public class GUI extends GUIObserver {
 //	private JCheckBoxMenuItem mntmPoi;
 //	private JCheckBoxMenuItem mntmDocxj;
 	
-	private LoaderService loaderService;
-	
 	public static String menuSelection = "POI";
 	
 	/**
@@ -104,9 +100,9 @@ public class GUI extends GUIObserver {
 	 */
 	public static void main(String[] args) {
 		Stream.of(UIManager.getInstalledLookAndFeels()).filter(look -> "Nimbus".equals(look.getName())).findFirst()
-				.ifPresent(GUI::setLookAndFeel);
+				.ifPresent(GUI_Backup::setLookAndFeel);
 
-		EventQueue.invokeLater(() -> new GUI().frmWritersUtility.setVisible(true));
+		EventQueue.invokeLater(() -> new GUI_Backup().frmWritersUtility.setVisible(true));
 	}
 
 	/**
@@ -114,7 +110,7 @@ public class GUI extends GUIObserver {
 	 * 
 	 * @wbp.parser.entryPoint
 	 */
-	public GUI() {
+	public GUI_Backup() {
 		initialize();
 	}
 
@@ -122,8 +118,6 @@ public class GUI extends GUIObserver {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		this.loaderService = LoaderService.getInstance();
-		this.loaderService.addObserver(this);
 		this.frmWritersUtility = new JFrame();
 		this.frmWritersUtility.setTitle("Writer's Utility");
 		this.frmWritersUtility.setBounds(100, 100, 800, 500);
@@ -246,17 +240,10 @@ public class GUI extends GUIObserver {
 	private JTabbedPane getTabbedPane_1() {
 		if (tabbedPane == null) {
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			List<Plugin> pluginList = loaderService.getPlugins();
-			System.out.println("Loading plugins..."+pluginList.size());
-			for(Plugin plugin : pluginList){
-				System.out.println("Loaded: "+plugin.getName());
-				tabbedPane.addTab(plugin.getName(), null, plugin.getPanel(), null);
-			}
-			
-//			JPanel pippo = getPanelRipetizioni();
-//			pippo.setBounds(0, 0, 110, 110);
-//			tabbedPane.addTab("Ripetizioni", null, getPanelRipetizioni(), null);
-//			tabbedPane.addTab("Errori", null, getPanelErrori(), null);
+			JPanel pippo = getPanelRipetizioni();
+			pippo.setBounds(0, 0, 110, 110);
+			tabbedPane.addTab("Ripetizioni", null, getPanelRipetizioni(), null);
+			tabbedPane.addTab("Errori", null, getPanelErrori(), null);
 		}
 		return tabbedPane;
 	}
@@ -419,22 +406,55 @@ public class GUI extends GUIObserver {
 				}
 				newText = documentProcessor.searchForSimilarities(text, words,
 						(int) spinnerFinestra.getValue(), Double.valueOf(sliderAccuratezza.getValue()) / 100);
-				runFx();
+				Platform.runLater(() -> {
+					webView = new WebView();
+					jfxPanel.setScene(new Scene(webView));
+					webView.getEngine().loadContent(newText);
+				});
 
 				System.out.println(newText);
 				editorPane.setText(newText);
 			});
 		}
 		return btnAnalizza;
+	}	
+	private JPanel getPanelErrori() {
+		if (panelErrori == null) {
+			panelErrori = new JPanel();
+			panelErrori.add(getButton());
+		}
+		return panelErrori;
+	}
+	private JButton getButton() {
+		if (button == null) {
+			button = new JButton("Correggi errori");
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					//Operazioni necessarie se si scrive direttamente nel pane
+					if (!fileLoaded) {
+						try {
+							text = Utils.createHtmlFromText(
+									editorPane.getDocument().getText(0, editorPane.getDocument().getLength()));
+						} catch (BadLocationException e1) {
+							e1.printStackTrace();
+						}
+						editorPane.setContentType("text/html");
+					}
+					newText = documentProcessor.searchForWrongWordsReplaceAll(text);
+					Platform.runLater(() -> {
+						webView = new WebView();
+						jfxPanel.setScene(new Scene(webView));
+						webView.getEngine().loadContent(newText);
+					});
+
+					System.out.println(newText);
+					editorPane.setText(newText);
+				}
+			});
+		}
+		return button;
 	}
 
-	private void runFx() {
-		Platform.runLater(() -> {
-			webView = new WebView();
-			jfxPanel.setScene(new Scene(webView));
-			webView.getEngine().loadContent(newText);
-		});
-	}	
 	public String getOriginalText(){
 		return text;
 	}
@@ -444,11 +464,11 @@ public class GUI extends GUIObserver {
 		this.setText(text);
 	}
 	
-	private String getText() {
-		return fileLoaded ? newText : checkAndConvertToHTML(getEditorPane().getText());
+	public String getText() {
+		return fileLoaded ? newText : getEditorPane().getText();
 	}
 	
-	private void setText(String text){
+	public void setText(String text){
 		if(fileLoaded){
 			Platform.runLater(() -> {
 				webView = new WebView();
@@ -478,23 +498,6 @@ public class GUI extends GUIObserver {
 
 	public void setFileLoaded(boolean loaded){
 		this.fileLoaded = loaded;
-	}
-
-	@Override
-	public void setNewText(String newText) {
-		this.setText(newText);
-	}
-
-	@Override
-	public String getGUIText() {
-		return this.getText();
-	}
-	
-	private String checkAndConvertToHTML(String inputText){
-		if(inputText.startsWith("<html>") || inputText.startsWith("<!DOCTYPE"))
-			return inputText;
-		else
-			return Utils.createHtmlFromText(inputText);
 	}
 	
 }
