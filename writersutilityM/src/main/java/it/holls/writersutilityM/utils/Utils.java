@@ -252,6 +252,8 @@ public class Utils {
 			put("&mdash;", "&#8212;");
 			put("&lsquo;", "&#8216;");
 			put("&rsquo;", "&#8217;");
+			put("'", "&#8217;");
+			put("’", "&#8217;");
 			put("&sbquo;", "&#8218;");
 			put("&ldquo;", "&#8220;");
 			put("&rdquo;", "&#8221;");
