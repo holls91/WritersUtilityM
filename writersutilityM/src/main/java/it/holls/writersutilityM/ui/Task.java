@@ -8,13 +8,13 @@ import javax.swing.SwingWorker;
 
 public class Task extends SwingWorker<Void, Void> {
 
-	private GUI gui;
+	private GUIold gui;
 
-	public Task(GUI gui) {
+	public Task(GUIold gui) {
 		this.gui = gui;
 	}
 
-	public Task(GUI gui, PropertyChangeListener listener) {
+	public Task(GUIold gui, PropertyChangeListener listener) {
 		this.gui = gui;
 		this.addPropertyChangeListener(listener);
 	}

@@ -43,6 +43,8 @@ import it.holls.writersutilityM.documentReader.DocumentReaderInLineText;
 import it.holls.writersutilityM.documentReader.FactoryDocumentReader;
 import it.holls.writersutilityM.iterator.HTMLWordIterator2;
 import it.holls.writersutilityM.iterator.Word;
+import it.holls.writersutilityM.iterator.WordIterator;
+import it.holls.writersutilityM.iterator.fragment.FragmentIterator;
 import it.holls.writersutilityM.iterator.fragment.HTMLFragmentIterator;
 import it.holls.writersutilityM.utils.Utils;
 import javafx.application.Platform;
@@ -50,7 +52,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 
-public class GUI2 {
+public class GUI_Backup {
 
 	private JFrame frmWritersUtility;
 	private JMenuBar menuBar;
@@ -58,7 +60,7 @@ public class GUI2 {
 	private JMenuItem mntmApri;
 	private JMenuItem mntmEsci;
 
-	private String text = "";
+	private String text = "", newText = "";
 
 	JFXPanel jfxPanel = new JFXPanel();
 	WebView webView;
@@ -67,6 +69,8 @@ public class GUI2 {
 
 	private DocumentReader documentReader = new DocumentReaderInLineText();
 	private DocumentProcessor documentProcessor = new DocumentProcessor();
+	private FragmentIterator fi;
+	private WordIterator wi;
 	
 //	private Task task;
 	private JTabbedPane tabbedPane;
@@ -96,9 +100,9 @@ public class GUI2 {
 	 */
 	public static void main(String[] args) {
 		Stream.of(UIManager.getInstalledLookAndFeels()).filter(look -> "Nimbus".equals(look.getName())).findFirst()
-				.ifPresent(GUI2::setLookAndFeel);
+				.ifPresent(GUI_Backup::setLookAndFeel);
 
-		EventQueue.invokeLater(() -> new GUI2().frmWritersUtility.setVisible(true));
+		EventQueue.invokeLater(() -> new GUI_Backup().frmWritersUtility.setVisible(true));
 	}
 
 	/**
@@ -106,7 +110,7 @@ public class GUI2 {
 	 * 
 	 * @wbp.parser.entryPoint
 	 */
-	public GUI2() {
+	public GUI_Backup() {
 		initialize();
 	}
 
@@ -194,6 +198,7 @@ public class GUI2 {
 						text = text.replaceAll("margin-left:\\d{1,}(?:[,\\.]\\d{1,})?pt", "margin-left: 5%");
 						System.out.println(text);
 
+						editorPane.setText("");
 						// Creation of scene and future interactions with
 						// JFXPanel
 						// should take place on the JavaFX Application Thread
@@ -202,6 +207,7 @@ public class GUI2 {
 							jfxPanel.setScene(new Scene(webView));
 							webView.getEngine().loadContent(text);
 						});
+						this.newText = text;
 					}
 
 					// editorPane.setText(DocumentManipulator.getParagraphText(DocumentManipulator.openFile(file)));
@@ -248,7 +254,7 @@ public class GUI2 {
 		}
 		return scrollPane;
 	}
-	private JEditorPane getEditorPane() {
+	public JEditorPane getEditorPane() {
 		if (editorPane == null) {
 			editorPane = new JEditorPane();
 		}
@@ -392,13 +398,13 @@ public class GUI2 {
 //				Map<Integer, String> words = documentReader.extractWordsFromHTML(text,
 //						(int) spinnerLunghezza.getValue()-1);
 				Map<Integer, String> words = new TreeMap<>();
-				HTMLFragmentIterator fi = new HTMLFragmentIterator(text);
-				HTMLWordIterator2 wi = new HTMLWordIterator2(fi, (int) spinnerLunghezza.getValue()-1);
+				fi = new HTMLFragmentIterator(text);
+				wi = new HTMLWordIterator2(fi, (int) spinnerLunghezza.getValue()-1);
 				while(wi.hasNext()) {
 					Word word = wi.next();
 					words.put(word.getPosition(), word.getParola());
 				}
-				String newText = documentProcessor.searchForSimilarities(text, words,
+				newText = documentProcessor.searchForSimilarities(text, words,
 						(int) spinnerFinestra.getValue(), Double.valueOf(sliderAccuratezza.getValue()) / 100);
 				Platform.runLater(() -> {
 					webView = new WebView();
@@ -434,7 +440,7 @@ public class GUI2 {
 						}
 						editorPane.setContentType("text/html");
 					}
-					String newText = documentProcessor.searchForWrongWordsReplaceAll(text);
+					newText = documentProcessor.searchForWrongWordsReplaceAll(text);
 					Platform.runLater(() -> {
 						webView = new WebView();
 						jfxPanel.setScene(new Scene(webView));
@@ -448,61 +454,50 @@ public class GUI2 {
 		}
 		return button;
 	}
-//	private JMenu getMnOpzioni() {
-//		if (mnOpzioni == null) {
-//			mnOpzioni = new JMenu("Opzioni");
-//			mnOpzioni.add(getMnDocx());
-//		}
-//		return mnOpzioni;
-//	}
-//	private JMenu getMnDocx() {
-//		if (mnDocx == null) {
-//			mnDocx = new JMenu("Docx");
-//			mnDocx.add(getMntmPoi());
-//			mnDocx.add(getMntmDocxj());
-//		}
-//		return mnDocx;
-//	}
-//	private JCheckBoxMenuItem getMntmPoi() {
-//		if (mntmPoi == null) {
-//			mntmPoi = new JCheckBoxMenuItem("POI", true);
-//			mntmPoi.addItemListener(new ItemListener() {
-//
-//				@Override
-//				public void itemStateChanged(ItemEvent e) {
-//					Object source = e.getItemSelectable();
-//					if(source == mntmPoi){
-//						menuSelection = mntmPoi.getText();
-//					}
-//					else if (source == mntmDocxj){
-//						menuSelection = mntmDocxj.getText();
-//					}
-//					
-//				}
-//				
-//			});
-//		}
-//		return mntmPoi;
-//	}
-//	private JCheckBoxMenuItem getMntmDocxj() {
-//		if (mntmDocxj == null) {
-//			mntmDocxj = new JCheckBoxMenuItem("Docx4j");
-//			mntmDocxj.addItemListener(new ItemListener() {
-//
-//				@Override
-//				public void itemStateChanged(ItemEvent e) {
-//					Object source = e.getItemSelectable();
-//					if(source == mntmPoi){
-//						menuSelection = mntmPoi.getText();
-//					}
-//					else if (source == mntmDocxj){
-//						menuSelection = mntmDocxj.getText();
-//					}
-//					
-//				}
-//				
-//			});
-//		}
-//		return mntmDocxj;
-//	}
+
+	public String getOriginalText(){
+		return text;
+	}
+	
+	public void setOriginalText(String text){
+		this.text = text;
+		this.setText(text);
+	}
+	
+	public String getText() {
+		return fileLoaded ? newText : getEditorPane().getText();
+	}
+	
+	public void setText(String text){
+		if(fileLoaded){
+			Platform.runLater(() -> {
+				webView = new WebView();
+				jfxPanel.setScene(new Scene(webView));
+				webView.getEngine().loadContent(text);
+			});
+		}
+		else {
+			if(!getEditorPane().getContentType().equals("text/html"))
+				getEditorPane().setContentType("text/html");
+			getEditorPane().setText(text);
+		}
+		this.newText = text;
+	}
+
+	public FragmentIterator getFragmentIterator(){
+		return fi;
+	}
+	
+	public WordIterator getWordIterator() {
+		return wi;
+	}
+
+	public DocumentProcessor getDocumentProcessor() {
+		return documentProcessor;
+	}
+
+	public void setFileLoaded(boolean loaded){
+		this.fileLoaded = loaded;
+	}
+	
 }

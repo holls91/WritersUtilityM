@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+	@SuppressWarnings("serial")
 	private static Map<String, String> entityMap = new HashMap<String, String>() {
 		{
 			put("&nbsp;", "&#160;");
@@ -251,6 +252,8 @@ public class Utils {
 			put("&mdash;", "&#8212;");
 			put("&lsquo;", "&#8216;");
 			put("&rsquo;", "&#8217;");
+			put("'", "&#8217;");
+			put("’", "&#8217;");
 			put("&sbquo;", "&#8218;");
 			put("&ldquo;", "&#8220;");
 			put("&rdquo;", "&#8221;");
@@ -273,7 +276,7 @@ public class Utils {
 		StringBuilder builder = new StringBuilder();
 		boolean previousWasASpace = false;
 		String[] tempText = inputText.split("\r?\n");
-		builder.append("<html><body>");
+		builder.append("<html><head></head><body>");
 		for (int i = 0; i < tempText.length; i++) {
 			String input = tempText[i];
 			if (input.length() > 0 && !input.equals("\n") && !input.equals("\r\n")) {
@@ -328,6 +331,7 @@ public class Utils {
 		return builder.toString();
 	}
 
+	@SuppressWarnings("serial")
 	public static Map<String, String> itWrongWords = new TreeMap<String, String>() {
 		{
 			put("perch&#232;", "perch&#233;");

@@ -1,13 +1,13 @@
 package it.holls.writersutilityM.documentReader;
 
-import it.holls.writersutilityM.ui.GUI2;
+import it.holls.writersutilityM.ui.GUI;
 
 public class FactoryDocumentReader {
 
 	public static DocumentReader getDocumentReader(String format) {
 		switch (format) {
 		case "docx":
-			if(GUI2.menuSelection.equals("POI"))
+			if(GUI.menuSelection.equals("POI"))
 				return new DocumentReaderPOI();
 			else
 				return new DocumentReaderDocx4j();

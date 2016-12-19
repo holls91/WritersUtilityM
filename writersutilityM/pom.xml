@@ -5,6 +5,7 @@
 	<groupId>it.holls</groupId>
 	<artifactId>writersutilityM</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<name>writersutilityM</name>
 	<url>http://maven.apache.org</url>
@@ -43,7 +44,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>it.holls.writersutilityM.ui.GUI2</mainClass>
+							<mainClass>it.holls.writersutilityM.ui.GUI</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -106,6 +107,18 @@
 		    <artifactId>docx4j-ImportXHTML</artifactId>
 		    <version>3.3.1</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>it.holls</groupId>
+			<artifactId>writersutility-plugin</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>writersutility-api-observer</groupId>
+			<artifactId>writersutility-api-observer</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>
